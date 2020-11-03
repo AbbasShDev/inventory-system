@@ -1,7 +1,6 @@
 <?php
 
-class Users
-{
+class Users {
 
     private $con;
     public $errors = [];
@@ -13,8 +12,7 @@ class Users
         $this->con = $db->connect();
     }
 
-    private function userExist($email)
-    {
+    private function userExist($email) {
         $prep_stat = $this->con->prepare('SELECT id FROM users WHERE user_email=?');
         $prep_stat->bind_param('s', $email);
         $prep_stat->execute() or die($this->con->error);

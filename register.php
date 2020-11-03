@@ -4,6 +4,11 @@ $pageTitle = 'Register';
 require_once 'includes/templates/header.php';
 require_once 'includes/classes/Users.php';
 
+if (isset($_SESSION['user_id'])){
+    header('location:dashboard.php');
+    die();
+}
+
 $errors = [];
 $email = '';
 $username = '';
@@ -37,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         );
 
         if (!count($errors)){
+            $_SESSION['notify_message'] = 'Account created, please login.';
             header('location:index.php');
             die();
         }

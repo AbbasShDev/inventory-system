@@ -31,10 +31,29 @@ require_once __DIR__.'/../config/app.php'
             <li class="nav-item active">
                 <a class="nav-link" href="#"><i class="fas fa-home">&nbsp;</i>Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
-            </li>
+            <?php if (isset($_SESSION['user_id'])){?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo $config['app_url']?>logout.php"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+                </li>
+            <?php } ?>
         </ul>
     </div>
 </nav>
 <!-- End navbar -->
+
+<!-- Start notification message -->
+<?php if (isset($_SESSION['notify_message'])) {?>
+    <div class="notify-message">
+        <?php echo $_SESSION['notify_message'];?>
+    </div>
+<?php }
+unset($_SESSION['notify_message']); ?>
+<!-- End notification message -->
+<!-- Start error message -->
+<?php if (isset($_SESSION['error_message'])) {?>
+    <div class="notify-message bg-danger">
+        <?php echo $_SESSION['error_message'];?>
+    </div>
+<?php }
+unset($_SESSION['error_message']); ?>
+<!-- End error message -->
