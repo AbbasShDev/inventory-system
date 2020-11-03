@@ -95,4 +95,86 @@ $(document).ready(function () {
 
     })
 
+    //Delete Category
+    $('.delete-category').on('click', function () {
+
+        if (confirm('Confirm deleting category..?')){
+
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:{delete_category_id: $(this).data('cid')},
+                success: function (data) {
+                    if (data == 'Sorry this category is a parent of other categories'){
+
+                        $('.manage-categories').prepend('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '</button>' + data + '</div>');
+
+                    }else if (data == 'Category deleted successfully'){
+
+                        $('.manage-categories').prepend('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '</button>' + data + '</div>');
+
+                    }else {
+                        console.log(data);
+                    }
+                }
+            })
+
+
+        }else {
+            return false;
+        }
+
+    })
+
+    //Update category (get info)
+    $('.edit-category').on('click', function () {
+        $.ajax({
+            method:'POST',
+            url:'process.php',
+            dataType:'json',
+            data:{get_category_id: $(this).data('cid')},
+            success: function (data) {
+                $('.edit_category_modal #edit_category_id').val(data["id"]);
+                $('.edit_category_modal #category_name').val(data["category_name"]);
+                $('.edit_category_modal #parent_category').val(data["parent_category"]);
+            }
+        })
+    })
+    //Update category
+    $('.edit_category').on('submit', function (e) {
+        e.preventDefault();
+        if ($('#category_name').val() == ''){
+            $('#category_name').addClass('border-danger');
+            $('#cat_error').html('<span class="text-danger">Please Enter Category Name</span>');
+        }else {
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:$('.edit_category').serialize(),
+                success: function (data) {
+                    alert(data);
+                    window.location.href = '';
+                }
+            })
+        }
+    })
+
 })
+
+
+
+
+
+
+
+
+
+
+
+

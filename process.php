@@ -28,3 +28,26 @@ if (isset($_POST['product_name']) & isset($_POST['product_price'])){
         );
     echo $result;
 }
+
+if (isset($_POST['delete_category_id'])){
+    $category   = new Category();
+    $result     = $category->deleteCategory($_POST['category_id']);
+    echo $result;
+}
+
+if (isset($_POST['get_category_id'])){
+    $category   = new Category();
+    $result     = $category->getSingleCategory($_POST['get_category_id']);
+    echo json_encode($result);
+}
+
+if (isset($_POST['edit_category_name'])){
+    $category   = new Category();
+
+    $result = $category->updateCategory(
+        $_POST['edit_parent_category'],
+        $_POST['edit_category_name'],
+        $_POST['edit_category_id']);
+
+     echo $result;
+}

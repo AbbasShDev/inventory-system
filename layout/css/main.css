@@ -49,6 +49,11 @@
     left: -300px;
     z-index: 9999;
 }
+.manage-categories .alert {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
 /* End notification messages */
 
 /* CSS Loader */
