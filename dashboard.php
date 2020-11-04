@@ -221,7 +221,7 @@ if (!isset($_SESSION['user_id'])){
                     <h4 class="card-title">Brands<i class="fab fa-buffer float-right text-info"></i></h4>
                     <p class="card-text" style="height: 72px">Here you can manage your brands and add new brand</p>
                     <a href="#!" class="btn btn-success" data-toggle="modal" data-target="#add_brand"><i class="fas fa-plus"></i>&nbsp;Add</a>
-                    <a href="#!" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
+                    <a href="manage_brands.php" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
                 </div>
             </div>
         </div>

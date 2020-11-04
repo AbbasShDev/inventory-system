@@ -38,8 +38,6 @@ if (isset($_POST['delete_category_id'])){
         $_SESSION['error_message'] = 'Sorry this category is a parent of other categories';
     }
     echo $result;
-
-
 }
 
 if (isset($_POST['get_category_id'])){
@@ -60,4 +58,31 @@ if (isset($_POST['edit_category_name'])){
 
     echo $result;
 
+}
+
+//Update brand (get info)
+if (isset($_POST['get_brand_id'])){
+    $brand   = new Brands();
+    $result     = $brand->getSingleBrand($_POST['get_brand_id']);
+    echo json_encode($result);
+}
+//Update brand
+if (isset($_POST['edit_brand_name'])){
+
+    $brand   = new Brands();
+
+    $result = $brand->updateBrand($_POST['edit_brand_id'], $_POST['edit_brand_name']);
+
+    $_SESSION['notify_message'] = $result;
+
+    echo $result;
+
+}
+
+//Delete brand
+if (isset($_POST['delete_brand_id'])){
+    $brand   = new Brands();
+    $result     = $brand->deleteBrand($_POST['delete_brand_id']);
+    $_SESSION['notify_message'] = $result;
+    echo $result;
 }

@@ -55,7 +55,7 @@ class Category {
         $result = $prep_stat->get_result();
 
 
-        if ($result->num_rows > 1){
+        if ($result->num_rows > 0){
 
                 $prep_stat = $this->con->prepare("UPDATE categories SET category_name=? WHERE id=?");
                 $prep_stat->bind_param('si',$category_name,$category_id);

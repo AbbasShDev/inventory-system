@@ -152,6 +152,58 @@ $(document).ready(function () {
         }
     })
 
+    //Update brand (get info)
+    $('.edit_brand').on('click', function () {
+        $.ajax({
+            method:'POST',
+            url:'process.php',
+            dataType:'json',
+            data:{get_brand_id: $(this).data('bid')},
+            success: function (data) {
+                $('.edit_brand_modal #edit_brand_id').val(data["id"]);
+                $('.edit_brand_modal #brand_name').val(data["brand_name"]);
+            }
+        })
+    })
+    //Update brand//Delete Category
+    $('.edit-brand').on('submit', function (e) {
+        e.preventDefault();
+        if ($('#brand_name').val() == ''){
+            $('#brand_name').addClass('border-danger');
+            $('#brand_error').html('<span class="text-danger">Please Enter Brand Name</span>');
+        }else {
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:$('.edit-brand').serialize(),
+                success: function (data) {
+                    window.location.href = '';
+                }
+            })
+        }
+    })
+
+    //Delete Category
+    $('.delete-brand').on('click', function () {
+
+        if (confirm('Confirm deleting brand..? \nDeleting a brand wil delete all products within it')){
+
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:{delete_brand_id: $(this).data('bid')},
+                success: function (data) {
+                        window.location.href = '';
+                }
+            })
+
+
+        }else {
+            return false;
+        }
+
+    })
+
 })
 
 
