@@ -31,8 +31,15 @@ if (isset($_POST['product_name']) & isset($_POST['product_price'])){
 
 if (isset($_POST['delete_category_id'])){
     $category   = new Category();
-    $result     = $category->deleteCategory($_POST['category_id']);
+    $result     = $category->deleteCategory($_POST['delete_category_id']);
+    if ($result == 'Category deleted successfully'){
+        $_SESSION['notify_message'] = 'Category deleted successfully';
+    }elseif ($result == 'Sorry this category is a parent of other categories'){
+        $_SESSION['error_message'] = 'Sorry this category is a parent of other categories';
+    }
     echo $result;
+
+
 }
 
 if (isset($_POST['get_category_id'])){
@@ -49,5 +56,8 @@ if (isset($_POST['edit_category_name'])){
         $_POST['edit_category_name'],
         $_POST['edit_category_id']);
 
-     echo $result;
+        $_SESSION['notify_message'] = $result;
+
+    echo $result;
+
 }

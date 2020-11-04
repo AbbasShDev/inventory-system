@@ -90,7 +90,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
                             }
                             ?>
                         </td>
-                        <td><a class="btn btn-sm btn-success" href="#">Activate</a></td>
+                        <td><a class="btn btn-sm btn-success" href="#">Active</a></td>
                         <td>
                             <button class="btn btn-sm btn-danger delete-category" data-cid="<?php echo $r['id']?>">Delete</button>
                             <button class="btn btn-sm btn-info edit-category" data-toggle="modal" data-target="#edit_category" data-cid="<?php echo $r['id']?>">Edit</button>

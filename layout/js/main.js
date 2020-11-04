@@ -7,7 +7,7 @@ $(document).ready(function () {
                 left:'10px'
             },1000,
             function () {
-                $(this).delay(2500).fadeOut();
+                $(this).delay(6000).fadeOut();
             })
 
 
@@ -105,20 +105,8 @@ $(document).ready(function () {
                 url:'process.php',
                 data:{delete_category_id: $(this).data('cid')},
                 success: function (data) {
-                    if (data == 'Sorry this category is a parent of other categories'){
-
-                        $('.manage-categories').prepend('<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' + data + '</div>');
-
-                    }else if (data == 'Category deleted successfully'){
-
-                        $('.manage-categories').prepend('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button>' + data + '</div>');
-
+                    if (data == 'Sorry this category is a parent of other categories' || data == 'Category deleted successfully'){
+                        window.location.href = '';
                     }else {
                         console.log(data);
                     }
@@ -158,7 +146,6 @@ $(document).ready(function () {
                 url:'process.php',
                 data:$('.edit_category').serialize(),
                 success: function (data) {
-                    alert(data);
                     window.location.href = '';
                 }
             })

@@ -29,7 +29,7 @@ require_once __DIR__.'/../config/app.php'
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#"><i class="fas fa-home">&nbsp;</i>Home</a>
+                <a class="nav-link" href="<?php echo $config['app_url']?>dashboard.php"><i class="fas fa-home">&nbsp;</i>Home</a>
             </li>
             <?php if (isset($_SESSION['user_id'])){?>
                 <li class="nav-item">

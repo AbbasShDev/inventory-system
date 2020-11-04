@@ -88,7 +88,7 @@ class Category {
         $prep_stat->execute()or die($this->con->error);
         $result = $prep_stat->get_result();
 
-        if ($result->num_rows > 1){
+        if ($result->num_rows >= 1){
             return 'Sorry this category is a parent of other categories';
         }else{
             $prep_stat = $this->con->prepare("DELETE FROM categories WHERE id=?");
