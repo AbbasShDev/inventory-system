@@ -191,7 +191,7 @@ if (!isset($_SESSION['user_id'])){
                             <div class="card-body">
                                 <h4 class="card-title">Orders</h4>
                                 <p class="card-text">Here you can make a new orders and print invoices.</p>
-                                <a href="#!" class="btn btn-secondary"><i class="fas fa-plus"></i>&nbsp;New Order</a>
+                                <a href="new_order.php" class="btn btn-secondary"><i class="fas fa-plus"></i>&nbsp;New Order</a>
                             </div>
                         </div>
 
@@ -231,7 +231,7 @@ if (!isset($_SESSION['user_id'])){
                     <h4 class="card-title">Products<i class="fas fa-shopping-bag float-right text-info"></i></h4>
                     <p class="card-text" style="height: 72px">Here you can manage your products and add new product</p>
                     <a href="#!" class="btn btn-success"  data-toggle="modal" data-target="#add_product"><i class="fas fa-plus"></i>&nbsp;Add</a>
-                    <a href="#!" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
+                    <a href="manage_products.php" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
                 </div>
             </div>
         </div>
