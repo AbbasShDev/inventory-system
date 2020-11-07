@@ -5,6 +5,8 @@ require_once 'includes/classes/Brands.php';
 require_once 'includes/classes/Products.php';
 require_once 'includes/classes/Invoices.php';
 
+$errors = [];
+
 $product   = new Products();
 $category = new Category();
 $brand = new Brands();
@@ -154,7 +156,7 @@ if (isset($_POST['customer_name']) & isset($_POST['order_date'])){
 
     $order_date     = $_POST['order_date'];
     $customer_name  = $_POST['customer_name'];
-    $arr_pid        = $_POST['pid'];
+    if (isset($_POST['pid'])){$arr_pid = $_POST['pid'];}
     $arr_tqty       = $_POST['tqty'];
     $arr_qty        = $_POST['qty'];
     $arr_price      = $_POST['price'];
@@ -167,30 +169,84 @@ if (isset($_POST['customer_name']) & isset($_POST['order_date'])){
     $due            = $_POST['due'];
     $payment_type   = $_POST['payment_type'];
 
+    //From Validation
+    if (empty($customer_name)){$errors[] = 'Name is required';}
+    if ($sub_total < 0 ){$errors[] = 'Sub total can not be less than 0';}
+    if (empty($sub_total) & $sub_total != '0'){$errors[] = 'Sub total is required';}
+    if ($gst < 0){$errors[] = 'GST can not be less than 0';}
+    if (empty($gst) & $gst != '0'){$errors[] = 'GST is required';}
+    if ($discount < 0){$errors[] = 'Discount can not be less than 0';}
+    if (empty($discount) & $discount != '0'){$errors[] = 'Discount is required OR enter 0';}
+    if ($net_total < 0){$errors[] = 'Net total can not be less than 0';}
+    if (empty($net_total) & $net_total != '0'){$errors[] = 'Net total is required';}
+    if ($paid < 0){$errors[] = 'Paid can not be less than 0';}
+    if (empty($paid) & $paid != '0'){$errors[] = 'Paid is required OR enter 0';}
+    if ($due < 0){$errors[] = 'Due can not be less than 0';}
+    if (empty($due) & $due != '0'){$errors[] = 'Due is required OR enter 0';}
 
-    $result = $invoice->storeInvoice(
-        $order_date,
-        $customer_name,
-        $arr_qty,
-        $arr_price,
-        $arr_pro_name,
-        $sub_total,
-        $gst,
-        $discount,
-        $net_total,
-        $paid,
-        $due,
-        $payment_type
-    );
+    foreach ($arr_tqty as $tqty){
+        if (empty($tqty)){
+            $errors[] = 'Total Quantity is required';
+            break;
+        }
 
-    if ($result == 'Category created'){
-        $_SESSION['notify_message'] = $result;
-        echo $result;
-    }else{
-        $_SESSION['error_message'] = 'Something went wrong while making order, try again.';
-        echo $result;
+    }
+    foreach ($arr_qty as $qty){
+        if (empty($qty)){
+            $errors[] = 'Quantity is required';
+            break;
+        }
+    }
+    foreach ($arr_price as $price){
+        if (empty($price)){
+            $errors[] = 'Price is required';
+            break;
+        }
+
+    }
+    foreach ($arr_pro_name as $pro_name){
+        if (empty($pro_name)){
+            $errors[] = 'Product name is required';
+            break;
+        }
+
     }
 
+    if (!empty($errors)){
+        $errors_result = '';
+        foreach ($errors as $error ){
+            $errors_result .= "<p class='m-0'>- $error</p>";
+        }
+        echo $errors_result;
+    }
 
+    if (empty($errors)){
+
+        $result = $invoice->storeInvoice(
+            $order_date,
+            $customer_name,
+            $arr_pid,
+            $arr_tqty,
+            $arr_qty,
+            $arr_price,
+            $arr_pro_name,
+            $sub_total,
+            $gst,
+            $discount,
+            $net_total,
+            $paid,
+            $due,
+            $payment_type
+        );
+
+        if ($result == 'Order is Placed, thank you.'){
+            $_SESSION['notify_message'] = $result;
+            echo $result;
+        }else{
+
+            echo $result;
+        }
+
+    }
 }
 

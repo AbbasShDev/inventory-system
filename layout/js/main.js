@@ -368,12 +368,21 @@ $(document).ready(function () {
     });
 
     $('.invoice #make-order').on('click', function (){
+
+        let invoice = $('.invoice #order-form').serialize();
         $.ajax({
             method:'POST',
             url:'process.php',
             data:$('.invoice #order-form').serialize(),
             success: function (data) {
-                window.location.href = '';
+                if (data == 'Order is Placed, thank you.'){
+                    $('#errors').removeClass('alert alert-danger').html('');
+                    window.location.href = '';
+                }else{
+                    $('#errors').removeClass('alert alert-danger').html('');
+                    $('#errors').addClass('alert alert-danger').append(data);
+                }
+
             }
         })
     })
