@@ -213,11 +213,16 @@ if (isset($_POST['customer_name']) & isset($_POST['order_date'])){
     }
 
     if (!empty($errors)){
+
         $errors_result = '';
         foreach ($errors as $error ){
             $errors_result .= "<p class='m-0'>- $error</p>";
         }
-        echo $errors_result;
+
+        $msg = '<div class=" alert alert-danger alert-dismissible col-md-10 mx-auto">
+                        '.$errors_result.'
+                    </div>';
+        echo $msg;
     }
 
     if (empty($errors)){
@@ -239,12 +244,19 @@ if (isset($_POST['customer_name']) & isset($_POST['order_date'])){
             $payment_type
         );
 
-        if ($result == 'Order is Placed, thank you.'){
-            $_SESSION['notify_message'] = $result;
-            echo $result;
-        }else{
+        if (is_array($result)){
 
-            echo $result;
+            $msg = '<div class=" alert alert-success alert-dismissible col-md-10 mx-auto">
+                        <p class="m-0">'.$result['massage'].'</p>
+                        <p class="m-0">View invoice <u><a class="alert-link" target="_blank" href="view_invoice.php?invo_id='.$result['invoice_id'].'">here</a></u></p>
+                    </div>';
+
+            echo $msg;
+        }else{
+            $msg = '<div class=" alert alert-danger alert-dismissible col-md-10 mx-auto">
+                        <p class="m-0">'.$result.'</p>
+                    </div>';
+            echo $msg;
         }
 
     }

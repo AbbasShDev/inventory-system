@@ -40,6 +40,9 @@ require_once __DIR__.'/../config/app.php'
             <li class="nav-item active">
                 <a class="nav-link" href="<?php echo $config['app_url']?>manage_products.php"><i class="fas fa-shopping-bag">&nbsp;</i>Products</a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_orders.php"><i class="fas fa-file-invoice">&nbsp;</i>Orders</a>
+            </li>
             <?php if (isset($_SESSION['user_id'])){?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo $config['app_url']?>logout.php"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>

@@ -11,6 +11,19 @@ class Invoices {
         $this->con = $db->connect();
     }
 
+    public function existInvoice($invoice_id){
+        $prep_stat = $this->con->prepare('SELECT * FROM invoice WHERE id=?');
+        $prep_stat->bind_param('i', $invoice_id);
+        $prep_stat->execute();
+
+        $result = $prep_stat->get_result() or dir($this->con->error);
+        if ($result->num_rows > 0){
+            return true;
+        }
+
+        return false;
+    }
+
     public function storeInvoice($order_date, $customer_name, $arr_pid, $arr_tqty, $arr_qty, $arr_price, $arr_pro_name, $sub_total, $gst, $discount, $net_total, $paid, $due, $payment_type){
         $prep_stat = $this->con->prepare('INSERT INTO invoice (customer_name, order_date, sub_total, gst, discount, net_total, paid, due, payment_type) 
                                                 VALUES (?,?,?,?,?,?,?,?,?)');
@@ -34,10 +47,42 @@ class Invoices {
                 $insert_product->bind_param('isdd', $invoice_id, $arr_pro_name[$i], $arr_price[$i], $arr_qty[$i]);
                 $insert_product->execute() or die($this->con->error);
             }
-                return 'Order is Placed, thank you.';
+                return ['massage' => 'Order is Placed, thank you.', 'invoice_id' => $invoice_id];
         }else{
-            return $this->con->error;
+            die($this->con->error);
         }
+    }
+
+    function getSingleInvoice($invoice_id){
+
+        $prep_stat = $this->con->prepare("SELECT * FROM invoice WHERE id=?");
+        $prep_stat->bind_param('i', $invoice_id);
+        $prep_stat->execute()or die($this->con->error);
+
+        return  $prep_stat->get_result()->fetch_assoc();
+    }
+
+    function getSingleInvoiceDetails($invoice_id){
+
+        $prep_stat = $this->con->prepare("SELECT * FROM invoice_details WHERE invoice_id=?");
+        $prep_stat->bind_param('i', $invoice_id);
+        $prep_stat->execute()or die($this->con->error);
+
+        return  $prep_stat->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    function updateInvoicePDF($filename, $invoice_id){
+        $prep_stat = $this->con->prepare('UPDATE invoice SET invoice_pdf=? WHERE id=?');
+        $prep_stat->bind_param('si', $filename, $invoice_id);
+
+
+        if ($prep_stat->execute()){
+            return true;
+        }else{
+            die($this->con->error);
+        }
+
+
     }
 
 }

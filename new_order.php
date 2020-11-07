@@ -15,7 +15,9 @@ if (!isset($_SESSION['user_id'])){
 <!-- pre-loader -->
 <div class="container mt-4">
     <!-- errors -->
-    <div id="errors" class=" alert-dismissible col-md-10 mx-auto"></div>
+    <div id="msg" >
+
+    </div>
     <!-- errors -->
     <div class="row">
         <div class="col-md-10 mx-auto">

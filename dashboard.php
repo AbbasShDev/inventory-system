@@ -187,11 +187,12 @@ if (!isset($_SESSION['user_id'])){
                         <iframe src="http://free.timeanddate.com/clock/i7itywhw/n5397/szw160/szh160/hoc000/hbw4/cf100/hgr0/fav0/fiv0/mqc000/mqs3/mql25/mqw6/mqd96/mhc000/mhs3/mhl20/mhw6/mhd96/mmc000/mms3/mml10/mmw2/mmd96/hhw16/hmw16/hmr4/hsc000/hss3/hsl90" frameborder="0" width="160" height="160"></iframe>
                     </div>
                     <div class="col-sm-6 mt-5 mt-sm-0">
-                        <div class="card border-0">
+                        <div class="card border-0 rounded-lg" style="box-shadow: 0px 0px 6px #bcbdbecc">
                             <div class="card-body">
                                 <h4 class="card-title">Orders</h4>
                                 <p class="card-text">Here you can make a new orders and print invoices.</p>
                                 <a href="new_order.php" class="btn btn-secondary"><i class="fas fa-plus"></i>&nbsp;New Order</a>
+                                <a href="manage_orders.php" class="btn btn-info"><i class="fas fa-pencil-alt"></i>&nbsp;Manage </a>
                             </div>
                         </div>
 
