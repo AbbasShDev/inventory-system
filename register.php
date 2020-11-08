@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     if (empty($password)){array_push($errors, 'Password is required.');}
     if (strlen($password) < 6){array_push($errors, 'Password must be greater than 6.');}
     if (empty($password_conf)){array_push($errors, 'Password confirmation is required.');}
-    if ($usertype == '0'){array_push($errors, 'User type is required.');}
 
     if ($password != $password_conf){array_push($errors, "Passwords don't match.");}
 
@@ -37,8 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $errors =  $user->createUser(
             $username,
             $email,
-            $password,
-            $usertype
+            $password
         );
 
         if (!count($errors)){
@@ -74,14 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <div class="form-group">
                     <label>Re-enter password</label>
                     <input name="password_conf" class="form-control" placeholder="******" type="password" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label>User Type</label>
-                    <select class="custom-select" name="usertype">
-                        <option value="0">Select User Type</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Other">Other</option>
-                    </select>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-info btn-block"> Register  </button>

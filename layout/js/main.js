@@ -13,6 +13,47 @@ $(document).ready(function () {
 
     })
 
+    //Get all parent categories in select
+    getAllParentCategories();
+    function getAllParentCategories(){
+        $.ajax({
+            method:'POST',
+            url:'process.php',
+            data:{get_parents_categories: 1},
+            success: function (data) {
+                $('.add_category_modal #parent_category').html('');
+                $('.add_category_modal #parent_category').html(data);
+            }
+        })
+    }
+
+    //Get all parent categories in select
+    getAllCategories();
+    function getAllCategories(){
+        $.ajax({
+            method:'POST',
+            url:'process.php',
+            data:{get_all_categories: 1},
+            success: function (data) {
+                $('.add_product_modal #select_category').html('');
+                $('.add_product_modal #select_category').html(data);
+            }
+        })
+    }
+
+    //Get all brands in select
+    getAllBrands();
+    function getAllBrands(){
+        $.ajax({
+            method:'POST',
+            url:'process.php',
+            data:{get_all_brands: 1},
+            success: function (data) {
+                $('.add_product_modal #select_brand').html('');
+                $('.add_product_modal #select_brand').html(data);
+            }
+        })
+    }
 
     //add category
     $('.add_category').on('submit', function (e) {
@@ -21,17 +62,19 @@ $(document).ready(function () {
             $('#category_name').addClass('border-danger');
             $('#cat_error').html('<span class="text-danger">Please Enter Category Name</span>');
         }else {
-            $('.add_category_modal .overlay').fadeIn();
+            $('.add_category_modal .overlay').show();
             $.ajax({
                 method:'POST',
                 url:'process.php',
                 data:$('.add_category').serialize(),
                 success: function (data) {
-                    $('.add_category_modal .overlay').fadeOut();
+                    $('.add_category_modal .overlay').hide();
                     if (data == 'Category created'){
                         $('#category_name').removeClass('border-danger');
                         $('#cat_error').html('<span class="text-success">Category added successfully...!</span>');
                         $('#category_name').val('');
+                        getAllParentCategories();
+                        getAllCategories();
                     }else {
                         $('#category_name').addClass('border-danger');
                         $('#cat_error').html('<span class="text-danger">Category is already exist.</span>');
@@ -49,17 +92,18 @@ $(document).ready(function () {
             $('#brand_name').addClass('border-danger');
             $('#brand_error').html('<span class="text-danger">Please Enter Brand Name</span>');
         }else {
-            $('.add_brand_modal .overlay').fadeIn();
+            $('.add_brand_modal .overlay').show();
             $.ajax({
                 method:'POST',
                 url:'process.php',
                 data:$('.add_brand').serialize(),
                 success: function (data) {
-                    $('.add_brand_modal .overlay').fadeOut();
+                    $('.add_brand_modal .overlay').hide();
                     if (data == 'Brand created'){
                         $('#brand_name').removeClass('border-danger');
                         $('#brand_error').html('<span class="text-success">Brand added successfully...!</span>');
                         $('#brand_name').val('');
+                        getAllBrands();
                     }else{
                         $('#brand_name').addClass('border-danger');
                         $('#brand_error').html('<span class="text-danger">Brand is already exist.</span>');
@@ -73,13 +117,13 @@ $(document).ready(function () {
     //add product
     $('.add_product').on('submit', function (e) {
         e.preventDefault();
-            $('.add_product_modal .overlay').fadeIn();
+            $('.add_product_modal .overlay').show();
             $.ajax({
                 method:'POST',
                 url:'process.php',
                 data:$('.add_product').serialize(),
                 success: function (data) {
-                    $('.add_product_modal .overlay').fadeOut();
+                    $('.add_product_modal .overlay').hide();
                     if (data == 'Product created'){
                         $('#product_msg').html('<span class="text-success">Product added successfully...!</span>');
                         $('#product_name').val('');

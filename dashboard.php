@@ -4,11 +4,15 @@ $pageTitle = 'Dashboard';
 require_once 'includes/templates/header.php';
 require_once 'includes/classes/Category.php';
 require_once 'includes/classes/Brands.php';
+require_once 'includes/classes/Users.php';
 
 if (!isset($_SESSION['user_id'])){
     header('location:index.php');
     die();
 }
+
+$users = new Users();
+$user = $users->getUser($_SESSION['user_id']);
 
 ?>
 <!-- add_category modal -->
@@ -34,15 +38,8 @@ if (!isset($_SESSION['user_id'])){
                     <div class="form-group">
                         <label for="parent_category">Select Parent Category</label>
                         <select name="parent_category" id="parent_category" class="form-control">
-                            <option value="0" selected>Parent</option>
-                            <?php
-                            $category = new Category();
-                            $categories = $category->getAllCategories(0);
-                            foreach ($categories as $cat):?>
-                                <option value="<?php echo $cat['id']?>" >
-                                    <?php echo $cat['category_name']?>
-                                </option>
-                            <?php endforeach; ?>
+
+
                         </select>
                     </div>
 
@@ -120,29 +117,13 @@ if (!isset($_SESSION['user_id'])){
                     <div class="form-group">
                         <label for="select_category">Category</label>
                         <select name="select_category" id="select_category" class="form-control" required>
-                            <option value="0" selected disabled>Select Category</option>
-                            <?php
-                            $category = new Category();
-                            $categories = $category->getAllCategories();
-                            foreach ($categories as $cat):?>
-                                <option value="<?php echo $cat['id']?>" >
-                                    <?php echo $cat['category_name']?>
-                                </option>
-                            <?php endforeach; ?>
+
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="select_brand">Brand</label>
                         <select name="select_brand" id="select_brand" class="form-control" required>
-                            <option value="0" selected disabled>Select Brand</option>
-                                <?php
-                                $brand = new Brands();
-                                $brands = $brand->getAllbrands();
-                                foreach ($brands as $br):?>
-                                    <option value="<?php echo $br['id']?>" >
-                                        <?php echo $br['brand_name']?>
-                                    </option>
-                                <?php endforeach; ?>
+
                         </select>
                     </div>
 
@@ -169,13 +150,21 @@ if (!isset($_SESSION['user_id'])){
     <div class="row">
         <div class="col-md-4 mb-4 mb-md-0">
             <div class="card mx-auto h-100">
-                <img class="card-img-top p-2 mx-auto" style="width: 60%" src="<?php echo $config['app_url']?>layout/images/user.png" alt="user">
+                <img class="card-img-top p-2 mx-auto" style="width: 60%" src="
+                <?php
+                if (empty($user['avatar'])){
+                    echo $config['app_url'] .'layout/images/user.png';
+                }else {
+                    echo $config['app_url'] .$user['avatar'];
+                }
+                ?>
+                " alt="user">
                 <div class="card-body">
                     <h4 class="card-title">Profile Info</h4>
-                    <p class="card-text"><i class="fas fa-user text-info"></i>&nbsp;Abbas Alshaqaq</p>
-                    <p class="card-text"><i class="fas fa-user-tag text-info"></i>&nbsp;Admin</p>
-                    <p class="card-text"><i class="fas fa-clock text-info"></i>&nbsp;Last Login: xxxx-xx-xx</p>
-                    <a href="#!" class="btn btn-info"><i class="far fa-edit"></i>&nbsp;Edit Profile</a>
+                    <p class="card-text"><i class="fas fa-user text-info"></i>&nbsp;<?php echo $user['user_name']?></p>
+                    <p class="card-text"><i class="fas fa-user-tag text-info"></i>&nbsp;<?php echo $user['user_type']?></p>
+                    <p class="card-text"><i class="fas fa-clock text-info"></i>&nbsp;Last Login: <?php echo $user['user_last_login']?></p>
+                    <a href="profile.php" class="btn btn-info"><i class="far fa-edit"></i>&nbsp;Edit Profile</a>
                 </div>
             </div>
         </div>

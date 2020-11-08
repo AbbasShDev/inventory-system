@@ -25,7 +25,7 @@ class Users {
         }
     }
 
-    public function createUser($username, $email, $password, $usertype){
+    public function createUser($username, $email, $password){
 
         if ($this->userExist($email)) {
             array_push($this->errors,'User is already exist.');
@@ -33,8 +33,8 @@ class Users {
         }else{
             $pass_hash = password_hash($password, PASSWORD_DEFAULT);
             $notes = '';
-            $prep_stat = $this->con->prepare('INSERT INTO users (user_name, user_email, user_password, user_type, user_notes) VALUES (?,?,?,?,?)');
-            $prep_stat->bind_param('sssss',$username, $email, $pass_hash, $usertype, $notes);
+            $prep_stat = $this->con->prepare('INSERT INTO users (user_name, user_email, user_password, user_notes) VALUES (?,?,?,?)');
+            $prep_stat->bind_param('ssss',$username, $email, $pass_hash, $notes);
             $result = $prep_stat->execute() or die($this->con->error);
 
             if (!$result) {
@@ -80,6 +80,62 @@ class Users {
         }
 
     }
+
+    public function getUser($user_id){
+
+        $prep_stat = $this->con->prepare("SELECT * FROM users WHERE id=?");
+        $prep_stat->bind_param('i', $user_id);
+        $prep_stat->execute()or die($this->con->error);
+
+        return  $prep_stat->get_result()->fetch_assoc();
+    }
+
+    public function updateUsernameEmail($user_id,$username, $email){
+        if ($this->userExist($email)) {
+            array_push($this->errors,'Email is already exist.');
+            return $this->errors;
+        }else{
+            $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=? WHERE id=?');
+            $prep_stat->bind_param('ssi',$username, $email, $user_id);
+            $result = $prep_stat->execute() or die($this->con->error);
+
+            if (!$result) {
+                array_push($this->errors,'Something went wrong while creating account.');
+                return $this->errors;
+            }
+        }
+    }
+
+    public function updateUserPassword($user_id, $password){
+
+        $hash_pass = password_hash($password, PASSWORD_DEFAULT);
+
+        $prep_stat = $this->con->prepare('Update users Set user_password=? WHERE id=?');
+        $prep_stat->bind_param('si',$hash_pass, $user_id);
+        $result = $prep_stat->execute() or die($this->con->error);
+
+        if (!$result) {
+            array_push($this->errors,'Something went wrong while creating account.');
+            return $this->errors;
+        }
+
+    }
+
+    public function updateUserImg($user_id, $filePath){
+
+
+        $prep_stat = $this->con->prepare('Update users Set avatar=? WHERE id=?');
+        $prep_stat->bind_param('si',$filePath, $user_id);
+        $result = $prep_stat->execute() or die($this->con->error);
+
+        if (!$result) {
+            array_push($this->errors,'Something went wrong while creating account.');
+            return $this->errors;
+        }
+
+    }
+
+
 
 
 }

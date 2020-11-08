@@ -12,6 +12,47 @@ $category = new Category();
 $brand = new Brands();
 $invoice = new Invoices();
 
+//Get all parent categories in select
+if (isset($_POST['get_parents_categories'])){
+
+    $categories = $category->getAllCategories(0);?>
+    <option value="0" selected>Parent</option>
+    <?php foreach ($categories as $cat):?>
+        <option value="<?php echo $cat['id']?>" >
+            <?php echo $cat['category_name']?>
+        </option>
+    <?php endforeach;
+}
+
+//Get all categories in select
+if (isset($_POST['get_all_categories'])){
+    $categories = $category->getAllCategories();?>
+    <option value="0" selected disabled>Select Category</option>
+    <?php foreach ($categories as $cat):
+        if ($cat['parent_category'] == 0):?>
+            <option value="<?php echo $cat['id']?>" >
+                <?php echo $cat['category_name']?>
+            </option>
+            <?php foreach ($categories as $BabyCat):
+                if ($BabyCat['parent_category'] == $cat['id']):?>
+                    <option value="<?php echo $BabyCat['id']?>" >
+                        &nbsp;&nbsp;- <?php echo $BabyCat['category_name']?>
+                    </option>
+                <?php endif; endforeach;
+        endif; endforeach;
+}
+
+//Get all brands in select
+if (isset($_POST['get_all_brands'])){
+    $brands = $brand->getAllbrands();?>
+    <option value="" selected disabled>Select Brand</option>
+    <?php foreach ($brands as $br):?>
+        <option value="<?php echo $br['id']?>" >
+            <?php echo $br['brand_name']?>
+        </option>
+    <?php endforeach;
+}
+
 if (isset($_POST['category_name']) & isset($_POST['parent_category'])){
 
     $result = $category->addCategory($_POST['parent_category'], $_POST['category_name']);
