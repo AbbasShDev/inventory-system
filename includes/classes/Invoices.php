@@ -85,4 +85,25 @@ class Invoices {
 
     }
 
+    public function deleteInvoice($invoice_id){
+
+        //get pdf name to delete the file
+        $prep_stat = $this->con->prepare("SELECT invoice_pdf FROM invoice WHERE id=?");
+        $prep_stat->bind_param('i', $invoice_id);
+        $prep_stat->execute()or die($this->con->error);
+        $result =   $prep_stat->get_result()->fetch_assoc()['invoice_pdf'];
+
+        $prep_stat = $this->con->prepare("DELETE FROM invoice WHERE id=?");
+        $prep_stat->bind_param('i', $invoice_id);
+
+        if ($prep_stat->execute()){
+            //delete the file
+            unlink($config['root_dir'].$result);
+            return 'Invoice deleted successfully';
+        }else{
+            die($this->con->error);
+        }
+
+    }
+
 }

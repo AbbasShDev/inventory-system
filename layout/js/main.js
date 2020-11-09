@@ -285,7 +285,7 @@ $(document).ready(function () {
         }
     })
 
-    //Delete brand
+    //Delete product
     $('.delete-product').on('click', function () {
 
         if (confirm('Confirm deleting product..?')){
@@ -293,6 +293,25 @@ $(document).ready(function () {
                 method:'POST',
                 url:'process.php',
                 data:{delete_product_id: $(this).data('pid')},
+                success: function (data) {
+                    window.location.href = '';
+                }
+            })
+
+        }else {
+            return false;
+        }
+
+    })
+
+    //Delete Invoice
+    $('.delete-invoice').on('click', function () {
+
+        if (confirm('Confirm deleting invoice..?')){
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:{delete_invoice_id: $(this).data('inid')},
                 success: function (data) {
                     window.location.href = '';
                 }
@@ -418,15 +437,18 @@ $(document).ready(function () {
             method:'POST',
             url:'process.php',
             data:$('.invoice #order-form').serialize(),
+            beforeSend:function (){
+                $('.overlay').show();
+            },
             success: function (data) {
                 $('#msg').html('');
                 $('#msg').append(data);
                 $(window).scrollTop(0);
+                $('.overlay').hide();
 
             }
         })
     })
-
 
 
 })

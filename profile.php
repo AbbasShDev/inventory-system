@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <?php require_once 'includes/config/errorMessages.php'?>
     <h2 class="text-center my-5">Manage Profile</h2>
     <div class="row">
-        <div class="col-lg-4 mb-4 mb-md-0">
+        <div class="col-lg-4 mb-4 mb-lg-0">
             <div class="card mx-auto">
                 <div class="card-header"> Change Username, Email </div>
                 <div class="card-body">
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 </div>
             </div>
         </div>
-    <div class="col-lg-4 mb-4 mb-md-0">
+    <div class="col-lg-4 mb-4 mb-lg-0">
         <div class="card mx-auto">
             <div class="card-header"> Change Password </div>
             <div class="card-body">
@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             </div>
         </div>
     </div>
-        <div class="col-lg-4 mb-4 mb-md-0">
+        <div class="col-lg-4 mb-4 mb-lg-0">
             <div class="card mx-auto">
                 <div class="card-header"> Change Profile Image </div>
                 <img class="card-img-top p-2 mx-auto" style="width: 34%" src="

@@ -150,7 +150,7 @@ $user = $users->getUser($_SESSION['user_id']);
     <div class="row">
         <div class="col-md-4 mb-4 mb-md-0">
             <div class="card mx-auto h-100">
-                <img class="card-img-top p-2 mx-auto" style="width: 60%" src="
+                <img class="card-img-top p-2 mx-auto" style="width: 60%;" src="
                 <?php
                 if (empty($user['avatar'])){
                     echo $config['app_url'] .'layout/images/user.png';
@@ -180,8 +180,8 @@ $user = $users->getUser($_SESSION['user_id']);
                             <div class="card-body">
                                 <h4 class="card-title">Orders</h4>
                                 <p class="card-text">Here you can make a new orders and print invoices.</p>
-                                <a href="new_order.php" class="btn btn-secondary"><i class="fas fa-plus"></i>&nbsp;New Order</a>
-                                <a href="manage_orders.php" class="btn btn-info"><i class="fas fa-pencil-alt"></i>&nbsp;Manage </a>
+                                <a href="new_order.php" class="btn btn-secondary mt-3"><i class="fas fa-plus"></i>&nbsp;New Order</a>
+                                <a href="manage_orders.php" class="btn btn-info mt-3"><i class="fas fa-pencil-alt"></i>&nbsp;Manage </a>
                             </div>
                         </div>
 

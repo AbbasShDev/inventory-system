@@ -4,8 +4,10 @@ session_start();
 require_once 'includes/classes/Invoices.php';
 require_once __DIR__ . '/vendor/autoload.php';
 
-if (isset($_GET) && isset($_GET['invo_id']) && is_numeric($_GET['invo_id'])){
-    $invoice_id =  intval($_GET['invo_id']);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['invo_id']) && is_numeric($_POST['invo_id'])){
+
+    $invoice_id =  intval($_POST['invo_id']);
     $invoice = new Invoices();
 
     if ($invoice->existInvoice($invoice_id)){
@@ -20,8 +22,8 @@ if (isset($_GET) && isset($_GET['invo_id']) && is_numeric($_GET['invo_id'])){
 
             $mpdf->WriteHTML('<h2 style="text-align: center">Inventory Management System </h2>');
             $mpdf->WriteHTML('<br>');
-            $mpdf->WriteHTML('<div style="width: 100%; padding-bottom: 10px"><div align="left" style="width: 20%;float: left;">Order date</div><div>: 20-20-2020</div></div>');
-            $mpdf->WriteHTML('<div style="width: 100%; padding-bottom: 10px"><div align="left" style="width: 20%;float: left;">Customer Name</div><div>: Abbas Alshaqaq</div></div>');
+            $mpdf->WriteHTML('<div style="width: 100%; padding-bottom: 10px"><div align="left" style="width: 20%;float: left;">Order date</div><div>: '.$invoice_details['order_date'].'</div></div>');
+            $mpdf->WriteHTML('<div style="width: 100%; padding-bottom: 10px"><div align="left" style="width: 20%;float: left;">Customer Name</div><div>:'.$invoice_details['customer_name'].'</div></div>');
             $mpdf->WriteHTML('<br>');
             $mpdf->WriteHTML('<br>');
             $mpdf->WriteHTML('<table style="border-collapse: collapse; border: 1px solid">');
@@ -69,8 +71,15 @@ if (isset($_GET) && isset($_GET['invo_id']) && is_numeric($_GET['invo_id'])){
             $invoice->updateInvoicePDF($filedir.$filename, $invoice_details['id']);
             //Saves file on the server as 'filename.pdf'
             $mpdf->Output($filedir.$filename, F);
-            //open file to view
-            $mpdf->Output($filename, I);
+
+            if (isset($_POST['download']) && $_POST['download'] == 'download'){
+                //Download file
+                $mpdf->Output($filename, D);
+            }else{
+                //open file to view
+                $mpdf->Output($filename, I);
+            }
+
         } catch (\Mpdf\MpdfException $e) { // Note: safer fully qualified exception name used for catch
             // Process the exception, log, print etc.
             die('Something went wrong');

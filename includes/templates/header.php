@@ -28,6 +28,7 @@ require_once __DIR__.'/../config/app.php'
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+            <?php if (isset($_SESSION['user_id'])){?>
             <li class="nav-item active">
                 <a class="nav-link" href="<?php echo $config['app_url']?>dashboard.php"><i class="fas fa-home">&nbsp;</i>Home</a>
             </li>
@@ -43,7 +44,7 @@ require_once __DIR__.'/../config/app.php'
             <li class="nav-item active">
                 <a class="nav-link" href="<?php echo $config['app_url']?>manage_orders.php"><i class="fas fa-file-invoice">&nbsp;</i>Orders</a>
             </li>
-            <?php if (isset($_SESSION['user_id'])){?>
+
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo $config['app_url']?>logout.php"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
                 </li>

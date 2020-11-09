@@ -31,7 +31,7 @@ if (isset($_POST['get_all_categories'])){
     <?php foreach ($categories as $cat):
         if ($cat['parent_category'] == 0):?>
             <option value="<?php echo $cat['id']?>" >
-                <?php echo $cat['category_name']?>
+                <?php echo $cat['category_name']; ?>
             </option>
             <?php foreach ($categories as $BabyCat):
                 if ($BabyCat['parent_category'] == $cat['id']):?>
@@ -157,6 +157,14 @@ if (isset($_POST['edit_product_id']) & isset($_POST['edit_product_name'])){
 if (isset($_POST['delete_product_id'])){
 
     $result     = $product->deleteProduct($_POST['delete_product_id']);
+    $_SESSION['notify_message'] = $result;
+    echo $result;
+}
+
+//Delete invoice
+if (isset($_POST['delete_invoice_id'])){
+
+    $result     = $invoice->deleteInvoice($_POST['delete_invoice_id']);
     $_SESSION['notify_message'] = $result;
     echo $result;
 }
@@ -289,7 +297,13 @@ if (isset($_POST['customer_name']) & isset($_POST['order_date'])){
 
             $msg = '<div class=" alert alert-success alert-dismissible col-md-10 mx-auto">
                         <p class="m-0">'.$result['massage'].'</p>
-                        <p class="m-0">View invoice <u><a class="alert-link" target="_blank" href="view_invoice.php?invo_id='.$result['invoice_id'].'">here</a></u></p>
+                            <div class="m-0">
+                                View invoice
+                                <form action="view_invoice.php" method="post" target="_blank" style="display: inline-block">
+                                    <input type="hidden" name="invo_id" value="'.$result['invoice_id'].'">
+                                    <input type="submit" value="here" class="alert-link p-0 border-0" style="background: none; text-decoration: underline">
+                                </form>
+                            </div>
                     </div>';
 
             echo $msg;

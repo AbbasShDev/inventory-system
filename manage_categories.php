@@ -8,7 +8,7 @@ require_once 'includes/classes/Category.php';
 $getAllWithPagination = new Database();
 
 $table = 'categories';
-$sql ='SELECT p.id, p.category_name, c.category_name as category_parent, p.category_status FROM categories p LEFT JOIN categories c ON p.parent_category = c.id';
+$sql ='SELECT p.id, p.category_name, c.category_name as category_parent, p.category_status FROM categories p LEFT JOIN categories c ON p.parent_category = c.id ORDER BY id DESC';
 
 $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categories',$table, $sql);
 
@@ -67,14 +67,14 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
 
             <h2 class="text-center my-5">Manage Categories</h2>
 
-            <table class="table table-striped table-hover table-bordered text-center">
+            <table class="table table-striped table-hover table-bordered text-center table-responsive">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Parent</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th style="width: 45px">#</th>
+                    <th style="width: 340px !important; min-width: 125px !important;">Name</th>
+                    <th style="width: 225px !important; min-width: 98px !important;">Parent</th>
+                    <th style="width: 192px !important; min-width: 83px !important;">Status</th>
+                    <th style="width: 307px !important; min-width: 133px !important;">Actions</th>
                 </tr>
                 </thead>
                 <tbody>

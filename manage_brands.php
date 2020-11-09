@@ -8,7 +8,7 @@ require_once 'includes/classes/Brands.php';
 $getAllWithPagination = new Database();
 
 $table = 'brands';
-$sql ='SELECT * from brands';
+$sql ='SELECT * from brands ORDER BY id DESC';
 
 $pagination = $getAllWithPagination->getAllResultWithPagination('manage_brands',$table, $sql);
 
@@ -52,13 +52,13 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_brands',
 
     <h2 class="text-center my-5">Manage brands</h2>
 
-    <table class="table table-striped table-hover table-bordered text-center">
+    <table class="table table-striped table-hover table-bordered text-center table-responsive">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th style="width: 45px">#</th>
+            <th style="width: 595px !important; min-width: 125px !important;">Name</th>
+            <th style="width: 192px !important; min-width: 83px !important;">Status</th>
+            <th style="width: 307px !important; min-width: 133px !important;">Actions</th>
         </tr>
         </thead>
         <tbody>

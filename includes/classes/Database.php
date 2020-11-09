@@ -87,7 +87,7 @@ class Database {
                                 </a>
                             </li>';
         }
-        $pagination .= '<li class="page-item';
+        $pagination .= '<li class="page-item ';
         if ($nextPage == 0){$pagination .= 'disabled';}
         $pagination .= '"><a class="page-link" href="'.$pageName.'.php?pagno='.$nextPage.'">
                                 &raquo;

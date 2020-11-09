@@ -9,7 +9,7 @@ require_once 'includes/classes/Category.php';
 $getAllWithPagination = new Database();
 
 $table = 'products';
-$sql ='SELECT products.*, categories.category_name, brands.brand_name FROM products, categories, brands WHERE products.category_id=categories.id AND products.brand_id=brands.id';
+$sql ='SELECT products.*, categories.category_name, brands.brand_name FROM products, categories, brands WHERE products.category_id=categories.id AND products.brand_id=brands.id ORDER BY id DESC';
 
 $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products',$table, $sql);
 
@@ -94,18 +94,18 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
 
     <h2 class="text-center my-5">Manage products</h2>
 
-    <table class="table table-striped table-hover table-bordered text-center">
+    <table class="table table-striped table-hover table-bordered text-center table-responsive">
         <thead>
         <tr>
             <th>#</th>
-            <th>Product</th>
-            <th>Category</th>
+            <th style="width: 370px !important; min-width: 370px !important;">Product</th>
+            <th style="width: 110px !important; min-width: 110px !important;">Category</th>
             <th>Brand</th>
             <th>Price</th>
             <th>Stock</th>
-            <th>Added Date</th>
+            <th style="min-width: 116px !important;">Added Date</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th style="min-width: 134px !important;">Actions</th>
         </tr>
         </thead>
         <tbody>
