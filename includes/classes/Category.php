@@ -11,15 +11,33 @@ class Category {
         $this->con = $db->connect();
     }
 
+    private function categoryExist($name) {
+
+        $prep_stat = $this->con->prepare('SELECT id FROM categories WHERE category_name=?');
+        $prep_stat->bind_param('s', $name);
+        $prep_stat->execute() or die($this->con->error);
+        $result = $prep_stat->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function addCategory($parent_ID, $name){
 
-        $prep_stat = $this->con->prepare('INSERT INTO categories  (parent_category, category_name) VALUES (?,?)');
-        $prep_stat->bind_param('is', $parent_ID, $name);
-        $result = $prep_stat->execute() or die($this->con->error);
-        if ($result){
-            return 'Category created';
+        if ($this->categoryExist($name)){
+            return 'Category is already exist.';
         }else{
-            return false;
+            $prep_stat = $this->con->prepare('INSERT INTO categories  (parent_category, category_name) VALUES (?,?)');
+            $prep_stat->bind_param('is', $parent_ID, $name);
+            $result = $prep_stat->execute() or die($this->con->error);
+            if ($result){
+                return 'Category created';
+            }else{
+                return false;
+            }
         }
 
     }

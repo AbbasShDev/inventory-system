@@ -28,7 +28,7 @@ if (!isset($_SESSION['user_id'])){
                         <div class="form-group row">
                             <label for="order_date" class="col-sm-3 col-form-label" align="right">Order Date</label>
                             <div class="col-sm-6">
-                                <input type="text" id="order_date" name="order_date" class="form-control form-control-sm" value="<?php echo date('Y-d-m')?>" readonly>
+                                <input type="text" id="order_date" name="order_date" class="form-control form-control-sm" value="<?php echo date('Y-m-d')?>" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -138,3 +138,134 @@ if (!isset($_SESSION['user_id'])){
 </div>
 
 <?php require_once 'includes/templates/footer.php'?>
+<script>
+    $(document).ready(function () {
+
+        //add order item
+        addOrderItem();
+        function addOrderItem(){
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:{getNewOrderItem: 1},
+                success: function (data) {
+                    $('#invoice-item').append(data);
+                    let n = 0;
+                    $('#invoice-item .number').each(function (){
+                        $(this).html(++n);
+                    })
+                }
+            });
+        }
+
+        //add order item on click
+        $('#add_order_item').on('click', function (e){
+            e.preventDefault();
+            addOrderItem();
+        });
+
+        //remove order item on click
+        $('#remove_order_item').on('click', function (e){
+            e.preventDefault();
+            $('#invoice-item tr').last().remove();
+            calculateInvoice(0, 0);
+        });
+
+        $('#invoice-item').delegate('.pid', 'change', function (){
+            let pid = $(this).val();
+            let tr = $(this).parent().parent();
+            $('.overlay').show();
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                dataType:'json',
+                data:{get_item_price_quantity: pid},
+                success: function (data) {
+                    $('.overlay').hide();
+                    tr.find('.tqty').val(data['product_stock']);
+                    tr.find('.qty').val(1);
+                    tr.find('.price').val(data['product_price']);
+                    tr.find('.total_item_price').html(tr.find('.price').val() * tr.find('.qty').val())
+                    tr.find('.pro_name').val(data['product_name']);
+                    calculateInvoice(0, 0);
+                }
+            })
+        })
+
+        //order_item_calculation
+        $('#invoice-item').delegate('.qty', 'keyup', function (){
+            let qty = $(this);
+            let tr = $(this).parent().parent();
+            if (isNaN(qty.val())){
+                alert('Please enter a number');
+                qty.val(1);
+            }else {
+                if ((qty.val() - 0) > (tr.find('.tqty').val() - 0)){
+                    alert('Quantity should be less than total quantity');
+                    qty.val(1);
+                }else {
+                    tr.find('.total_item_price').html(qty.val() * tr.find('.price').val());
+                    calculateInvoice(0, 0);
+                }
+
+            }
+        })
+
+        //invoice calculation
+        function calculateInvoice(disc, paid_amount){
+            let sub_total = 0;
+            let gst = 0;
+            let net_total = 0;
+            let discount = disc;
+            let paid = paid_amount;
+            let due  = 0;
+            $('.total_item_price').each(function (){
+                sub_total += Number($(this).html());
+            })
+            $('.invoice #sub_total').val(sub_total);
+            gst = 0.18 * sub_total;
+            $('.invoice #gst').val(gst);
+            net_total = sub_total + gst;
+            net_total += - discount;
+            $('.invoice #net_total').val(net_total);
+            $('.invoice #discount').val(discount);
+            $('.invoice #paid').val(paid_amount);
+            due = net_total - paid_amount;
+            $('.invoice #due').val(due);
+
+        }
+        //invoice calculation
+        $('.invoice #discount').keyup(function (){
+            let discount = $(this).val();
+            let paid = $('.invoice #paid').val();
+            calculateInvoice(discount, paid);
+        });
+        //invoice calculation
+        $('.invoice #paid').keyup(function (){
+            let paid = $(this).val();
+            let discount = $('.invoice #discount').val();
+            calculateInvoice(discount, paid);
+        });
+
+        $('.invoice #make-order').on('click', function (){
+
+            //let invoice = $('.invoice #order-form').serialize();
+            $.ajax({
+                method:'POST',
+                url:'process.php',
+                data:$('.invoice #order-form').serialize(),
+                beforeSend:function (){
+                    $('.overlay').show();
+                },
+                success: function (data) {
+                    $('#msg').html('');
+                    $('#msg').append(data);
+                    $(window).scrollTop(0);
+                    $('.overlay').hide();
+
+                }
+            })
+        })
+
+    });
+</script>

@@ -4,7 +4,7 @@ require_once __DIR__.'/../config/app.php'
 ?>
 
 <!DOCTYPE html>
-<html lang="ar" dir="ltr">
+<html dir="ltr">
 <head>
 
     <meta charset="utf-8" />

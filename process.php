@@ -53,18 +53,21 @@ if (isset($_POST['get_all_brands'])){
     <?php endforeach;
 }
 
-if (isset($_POST['category_name']) & isset($_POST['parent_category'])){
+//add category
+if (isset($_POST['category_name']) && isset($_POST['parent_category'])){
 
     $result = $category->addCategory($_POST['parent_category'], $_POST['category_name']);
     echo $result;
 }
 
+//add brand
 if (isset($_POST['brand_name'])){
 
     $result = $brand->addBrand($_POST['brand_name']);
     echo $result;
 }
 
+//add product
 if (isset($_POST['product_name']) & isset($_POST['product_price'])){
 
     $result = $product->addProduct(
@@ -118,9 +121,15 @@ if (isset($_POST['get_brand_id'])){
 if (isset($_POST['edit_brand_name'])){
 
     $result = $brand->updateBrand($_POST['edit_brand_id'], $_POST['edit_brand_name']);
-    $_SESSION['notify_message'] = $result;
-
-    echo $result;
+    if ($result == 'Brand is already exist.'){
+        $_SESSION['error_message'] = $result;
+        echo $result;
+    }elseif ($result == 'Brand updated successfully.'){
+        $_SESSION['notify_message'] = $result;
+        echo $result;
+    }else {
+        $result;
+    }
 }
 
 //Delete brand

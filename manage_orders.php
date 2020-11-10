@@ -11,15 +11,10 @@ $table = 'invoice';
 $sql ='SELECT * from invoice ORDER BY id DESC';
 
 $pagination = $getAllWithPagination->getAllResultWithPagination('manage_orders',$table, $sql);
-
 ?>
-
-
-
     <div class="container my-5">
-
-        <h2 class="text-center my-5">Manage orders</h2>
-
+        <h2 class="text-center mt-5 mb-3">Manage orders</h2>
+        <a href="new_order.php" class="btn btn-info mb-2"><i class="fas fa-plus"></i>&nbsp;New order</a>
         <table class="table table-striped table-hover table-bordered text-center table-responsive">
             <thead>
             <tr>
@@ -81,3 +76,27 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_orders',
     </div>
 
 <?php require_once 'includes/templates/footer.php'?>
+<script>
+    $(document).ready(function () {
+
+        //Delete Invoice
+        $('.delete-invoice').on('click', function () {
+
+            if (confirm('Confirm deleting invoice..?')){
+                $.ajax({
+                    method:'POST',
+                    url:'process.php',
+                    data:{delete_invoice_id: $(this).data('inid')},
+                    success: function (data) {
+                        window.location.href = '';
+                    }
+                })
+
+            }else {
+                return false;
+            }
+
+        })
+
+    });
+</script>

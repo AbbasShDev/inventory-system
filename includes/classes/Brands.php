@@ -11,16 +11,35 @@ class Brands {
         $this->con = $db->connect();
     }
 
-    public function addBrand($brand_name){
+    private function brandExist($name) {
 
-        $prep_stat = $this->con->prepare('INSERT INTO brands  (brand_name) VALUES (?)');
-        $prep_stat->bind_param('s', $brand_name);
-        $result = $prep_stat->execute() or die($this->con->error);
-        if ($result){
-            return 'Brand created';
-        }else{
+        $prep_stat = $this->con->prepare('SELECT id FROM brands WHERE brand_name=?');
+        $prep_stat->bind_param('s', $name);
+        $prep_stat->execute() or die($this->con->error);
+        $result = $prep_stat->get_result();
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
             return false;
         }
+    }
+
+    public function addBrand($brand_name){
+
+        if ($this->brandExist($brand_name)){
+            return 'Brand is already exist.';
+        }else{
+            $prep_stat = $this->con->prepare('INSERT INTO brands (brand_name) VALUES (?)');
+            $prep_stat->bind_param('s', $brand_name);
+            $result = $prep_stat->execute() or die($this->con->error);
+            if ($result){
+                return 'Brand created';
+            }else{
+                return false;
+            }
+        }
+
 
     }
 
@@ -43,6 +62,9 @@ class Brands {
 
     function updateBrand($brand_id, $brand_name){
 
+        if ($this->brandExist($brand_name)){
+            return 'Brand is already exist.';
+        }else{
             $prep_stat = $this->con->prepare("UPDATE brands SET brand_name=? WHERE id=?");
             $prep_stat->bind_param('si', $brand_name,$brand_id);
             if ($prep_stat->execute()){
@@ -50,6 +72,8 @@ class Brands {
             }else{
                 die($this->con->error);
             }
+        }
+
 
 
     }
