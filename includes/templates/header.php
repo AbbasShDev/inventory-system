@@ -44,7 +44,9 @@ require_once __DIR__.'/../config/app.php'
             <li class="nav-item active">
                 <a class="nav-link" href="<?php echo $config['app_url']?>manage_orders.php"><i class="fas fa-file-invoice">&nbsp;</i>Orders</a>
             </li>
-
+            <li class="nav-item active">
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_users.php"><i class="fas fa-users">&nbsp;</i>Users</a>
+            </li>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo $config['app_url']?>logout.php"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
                 </li>

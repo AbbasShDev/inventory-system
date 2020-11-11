@@ -45,6 +45,25 @@ class Users {
 
     }
 
+    public function addUserByAdmin($username, $email, $password, $user_role){
+
+        if ($this->userExist($email)) {
+            return 'User is already exist.';
+        }else{
+            $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+            $notes = '';
+            $prep_stat = $this->con->prepare('INSERT INTO users (user_name, user_email, user_password, user_notes, user_type) VALUES (?,?,?,?,?)');
+            $prep_stat->bind_param('sssss',$username, $email, $pass_hash, $notes, $user_role);
+
+            if ($prep_stat->execute()) {
+                return 'User created Successfully';
+            }else {
+                die($this->con->error);
+            }
+        }
+
+    }
+
     public function userLogin($email, $password){
         $prep_stat = $this->con->prepare('SELECT * FROM users WHERE user_email=?');
         $prep_stat->bind_param('s', $email);
@@ -106,6 +125,34 @@ class Users {
         }
     }
 
+    public function updateUsernameEmailRole($user_id,$username, $email, $role){
+
+            $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=?, user_type=? WHERE id=?');
+            $prep_stat->bind_param('sssi',$username, $email, $role, $user_id);
+
+            if ($prep_stat->execute()) {
+                return 'User updated Successfully';
+            }else {
+                die($this->con->error);
+            }
+
+    }
+
+    public function updateAllUserInfo($user_id,$username, $email, $role, $password){
+
+            $hash_pass = password_hash($password, PASSWORD_DEFAULT);
+
+            $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=?, user_type=?, user_password=? WHERE id=?');
+            $prep_stat->bind_param('ssssi',$username, $email, $role, $hash_pass, $user_id);
+
+            if ($prep_stat->execute()) {
+                return 'User updated Successfully';
+            }else {
+                die($this->con->error);
+            }
+
+    }
+
     public function updateUserPassword($user_id, $password){
 
         $hash_pass = password_hash($password, PASSWORD_DEFAULT);
@@ -131,6 +178,29 @@ class Users {
         if (!$result) {
             array_push($this->errors,'Something went wrong while creating account.');
             return $this->errors;
+        }
+
+    }
+
+    public function deleteUser($user_id){
+
+        $prep_stat1 = $this->con->prepare('SELECT avatar FROM users WHERE id=?');
+        $prep_stat1->bind_param('i', $user_id);
+        $prep_stat1->execute() or die($this->con->error);
+        $result = $prep_stat1->get_result()->fetch_assoc();
+
+        $avatar = $result['avatar'];
+
+        $prep_stat = $this->con->prepare("DELETE FROM users WHERE id=?");
+        $prep_stat->bind_param('i', $user_id);
+
+        if ($prep_stat->execute()){
+            if (!empty($avatar)){
+                unlink($config['root_dir'].$avatar);
+            }
+            return 'User deleted successfully';
+        }else{
+            die($this->con->error);
         }
 
     }

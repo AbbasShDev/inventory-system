@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $email          = $_POST['email'];
     $password       = $_POST['password'];
     $password_conf  = $_POST['password_conf'];
-    $usertype       = $_POST['usertype'];
 
 
     if (empty($username)){array_push($errors, 'Name is required.');}
