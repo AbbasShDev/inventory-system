@@ -5,7 +5,7 @@ require_once 'includes/templates/header.php';
 require_once 'includes/classes/Users.php';
 
 if (isset($_SESSION['user_id'])){
-    header('location:dashboard.php');
+    header('location:dashboard');
     die();
 }
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         if (!count($errors)){
             $_SESSION['notify_message'] = 'Welcome back '.$_SESSION['user_name'];
-            header('location:dashboard.php');
+            header('location:dashboard');
             die();
         }
     }
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <?php require_once 'includes/config/errorMessages.php'?>
     <div class="card col-md-8 col-lg-4 mx-auto">
         <div class="card-body">
-            <a href="register.php" class="float-right btn btn-outline-info">Register</a>
+            <a href="register" class="float-right btn btn-outline-info">Register</a>
             <h4 class="card-title mb-4 mt-1">Login</h4>
             <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post" autocomplete="off">
                 <div class="form-group">

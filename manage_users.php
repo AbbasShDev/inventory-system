@@ -4,6 +4,17 @@ $pageTitle = 'Manage Users';
 require_once 'includes/templates/header.php';
 require_once 'includes/classes/Database.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
+
+
+if ($_SESSION['user_role'] != 'Admin'){
+    header('location:dashboard');
+    die();
+}
+
 $getAllWithPagination = new Database();
 
 $table = 'users';
@@ -26,9 +37,6 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
                 </button>
             </div>
             <div class="modal-body">
-                <!-- msg -->
-                <div id="msg"></div>
-                <!-- msg -->
                 <form class="add_user">
                     <div class="form-group">
                         <label>Username</label>
@@ -54,7 +62,9 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
                             <option value="User" selected>User</option>
                         </select>
                     </div>
-
+                    <!-- msg -->
+                    <div id="msg"></div>
+                    <!-- msg -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -80,9 +90,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
                 </button>
             </div>
             <div class="modal-body">
-                <!-- msg -->
-                <div id="msg"></div>
-                <!-- msg -->
+
                 <form class="edit_user" enctype="multipart/form-data">
                     <input type="hidden" name="edit_user_id" id="edit_user_id" value="">
                     <div class="form-group">
@@ -116,6 +124,9 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
                         <input type="file" name="avatar" class="form-control" id="avatar">
                         <small class="form-text text-muted">Leave empty if you don't want to change it</small>
                     </div>
+                    <!-- msg -->
+                    <div id="edit_msg"></div>
+                    <!-- msg -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -195,7 +206,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
             $('.add_user_modal .overlay').show();
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:$('.add_user').serialize(),
                 success: function (data) {
                     $('.add_user_modal .overlay').hide();
@@ -203,10 +214,10 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
                     if (data == 'User created Successfully'){
                         window.location.href = '';
                     }else {
+                        $(document).scrollTop(0);
                         $('#msg').html('');
                         $('#msg').append(data);
                     }
-
 
                 }
             })
@@ -217,7 +228,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
         $('.edit-user').on('click', function () {
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 dataType:'json',
                 data:{get_user_info: $(this).data('uid')},
                 success: function (data) {
@@ -235,7 +246,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
 
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data: new FormData(this),
                     contentType: false,
                     cache:false,
@@ -245,8 +256,9 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
                         if (data == 'User updated Successfully'){
                             window.location.href = '';
                         }else {
-                            $('#msg').html('');
-                            $('#msg').append(data);
+                            $(document).scrollTop(0);
+                            $('.edit_user_modal #edit_msg').html('');
+                            $('.edit_user_modal #edit_msg').html(data);
                         }
 
                     }
@@ -260,7 +272,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_users',$
             if (confirm('Confirm deleting user..?')){
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:{delete_user_id: $(this).data('uid')},
                     success: function (data) {
                         window.location.href = '';

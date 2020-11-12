@@ -8,6 +8,16 @@ require_once 'includes/classes/Users.php';
 require_once 'includes/classes/Uploader.php';
 require_once 'includes/config/app.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
+
+
+if ($_SESSION['user_role'] != 'Admin'){
+    header('location:dashboard');
+    die();
+}
 
 $errors = [];
 
@@ -202,31 +212,7 @@ if (isset($_POST['edit_user_id']) && isset($_POST['edit_username'])){
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)){array_push($errors, 'You mast enter valid email');}
     if (empty($user_role)){array_push($errors, 'User Role confirmation is required.');}
 
-    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0){
 
-
-
-        $allowedTypes = [
-            'jpg' =>'image/jpeg',
-            'png' =>'image/png',
-            'gif' =>'image/gif'
-        ];
-
-        $upload = new Uploader('uploads/avatars', $allowedTypes, $config['root_dir']);
-        $upload->file = $_FILES['avatar'];
-        $errors = $upload->upload();
-
-        $filePath = $upload->filePath;
-        if (!count($errors) && !empty($avatar)){
-            unlink($config['root_dir'].$avatar);
-
-        }
-
-        if (!count($errors) ){
-            $errors = $user->updateUserImg($userID,  $filePath);
-        }
-
-    }
 
     if (!empty($errors)){
 
@@ -245,23 +231,89 @@ if (isset($_POST['edit_user_id']) && isset($_POST['edit_username'])){
 
     if (empty($errors) && empty($password)){
 
-        $result = $user->updateUsernameEmailRole($userID, $username, $email, $user_role);
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0){
 
-        if ($result == 'User updated Successfully'){
-            $_SESSION['notify_message'] = $result;
-            echo $result;
-        }else{
-            $msg = '<div class=" alert alert-danger alert-dismissible col-md-10 mx-auto">
+            $allowedTypes = [
+                'jpg' =>'image/jpeg',
+                'png' =>'image/png',
+                'gif' =>'image/gif'
+            ];
+
+            $upload = new Uploader('uploads/avatars', $allowedTypes, $config['root_dir']);
+            $upload->file = $_FILES['avatar'];
+            $errors = $upload->upload();
+
+            $filePath = $upload->filePath;
+            if (!count($errors) && !empty($avatar)){
+                unlink($config['root_dir'].$avatar);
+
+            }
+
+            if (!count($errors) ){
+                $errors = $user->updateUserImg($userID,  $filePath);
+            }
+
+            if (!empty($errors)){
+
+                $errors_result = '';
+                foreach ($errors as $error ){
+                    $errors_result .= "<p class='m-0'>- $error</p>";
+                }
+
+                $msg = '<div class=" alert alert-danger alert-dismissible col-md-10 mx-auto">
+                        '.$errors_result.'
+                    </div>';
+                echo $msg;
+            }
+
+        }
+
+
+        if (empty($errors)){
+            $result = $user->updateUsernameEmailRole($userID, $username, $email, $user_role);
+
+            if ($result == 'User updated Successfully'){
+                $_SESSION['notify_message'] = $result;
+                echo $result;
+            }else{
+                $msg = '<div class=" alert alert-danger alert-dismissible col-md-10 mx-auto">
                         '.'- '.$result.'
                     </div>';
-            echo $msg;
+                echo $msg;
+            }
         }
+
     }elseif (empty($errors) && !empty($password)){
+
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0){
+
+            $allowedTypes = [
+                'jpg' =>'image/jpeg',
+                'png' =>'image/png',
+                'gif' =>'image/gif'
+            ];
+
+            $upload = new Uploader('uploads/avatars', $allowedTypes, $config['root_dir']);
+            $upload->file = $_FILES['avatar'];
+            $errors = $upload->upload();
+
+            $filePath = $upload->filePath;
+            if (!count($errors) && !empty($avatar)){
+                unlink($config['root_dir'].$avatar);
+
+            }
+
+            if (!count($errors) ){
+                $errors = $user->updateUserImg($userID,  $filePath);
+            }
+
+        }
 
         if (strlen($password) < 6){array_push($errors, 'Password must be greater than 6.');}
         if (empty($password_conf)){array_push($errors, 'Password confirmation is required.');}
 
         if ($password != $password_conf){array_push($errors, "Passwords don't match.");}
+
 
         if (!empty($errors)){
 
@@ -294,6 +346,8 @@ if (isset($_POST['edit_user_id']) && isset($_POST['edit_username'])){
 
 
     }
+
+
 
 
 }
@@ -436,7 +490,7 @@ if (isset($_POST['customer_name']) & isset($_POST['order_date'])){
                         <p class="m-0">'.$result['massage'].'</p>
                             <div class="m-0">
                                 View invoice
-                                <form action="view_invoice.php" method="post" target="_blank" style="display: inline-block">
+                                <form action="view_invoice" method="post" target="_blank" style="display: inline-block">
                                     <input type="hidden" name="invo_id" value="'.$result['invoice_id'].'">
                                     <input type="submit" value="here" class="alert-link p-0 border-0" style="background: none; text-decoration: underline">
                                 </form>

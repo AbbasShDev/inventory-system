@@ -5,6 +5,11 @@ require_once 'includes/templates/header.php';
 require_once 'includes/classes/Database.php';
 require_once 'includes/classes/Invoices.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
+
 $getAllWithPagination = new Database();
 
 $table = 'invoice';
@@ -14,7 +19,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_orders',
 ?>
     <div class="container my-5">
         <h2 class="text-center mt-5 mb-3">Manage orders</h2>
-        <a href="new_order.php" class="btn btn-info mb-2"><i class="fas fa-plus"></i>&nbsp;New order</a>
+        <a href="new_order" class="btn btn-info mb-2"><i class="fas fa-plus"></i>&nbsp;New order</a>
         <table class="table table-striped table-hover table-bordered text-center table-responsive">
             <thead>
             <tr>
@@ -37,7 +42,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_orders',
                         if (!empty($r['invoice_pdf'])){
                             echo '<a class="btn btn-sm btn-warning" target="_blank" href="'.$config['app_url'].$r['invoice_pdf'].'" download>Download</a>';
                         }else{
-                            echo '<form action="view_invoice.php" target="_blank" method="post" style="display: inline-block">
+                            echo '<form action="view_invoice" target="_blank" method="post" style="display: inline-block">
                                     <input type="hidden" name="download" value="download">
                                     <input type="hidden" name="invo_id" value="'.$r['id'].'">
                                     <input type="submit" value="Download" class="btn btn-sm btn-warning">
@@ -48,7 +53,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_orders',
                         if (!empty($r['invoice_pdf'])){
                             echo '<a class="btn btn-sm btn-info" target="_blank" href="'.$config['app_url'].$r['invoice_pdf'].'">View</a>';
                         }else{
-                            echo '<form action="view_invoice.php" target="_blank" method="post" style="display: inline-block">
+                            echo '<form action="view_invoice" target="_blank" method="post" style="display: inline-block">
                                     <input type="hidden" name="invo_id" value="'.$r['id'].'">
                                     <input type="submit" value="View" class="btn btn-sm btn-info">
                                 </form>';
@@ -85,7 +90,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_orders',
             if (confirm('Confirm deleting invoice..?')){
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:{delete_invoice_id: $(this).data('inid')},
                     success: function (data) {
                         window.location.href = '';

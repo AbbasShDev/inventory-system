@@ -5,6 +5,16 @@ require_once 'includes/templates/header.php';
 require_once 'includes/classes/Database.php';
 require_once 'includes/classes/Category.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
+
+if ($_SESSION['user_role'] == 'User'){
+    header('location:dashboard');
+    die();
+}
+
 $getAllWithPagination = new Database();
 
 $table = 'categories';
@@ -152,25 +162,13 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
         function getAllParentCategories(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
-                data:{get_parents_categories: 1},
-                success: function (data) {
-                    $('.edit_category_modal #parent_category').html('');
-                    $('.edit_category_modal #parent_category').html(data);
-                }
-            })
-        }
-
-        //Get all parent categories in select
-        getAllParentCategories();
-        function getAllParentCategories(){
-            $.ajax({
-                method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{get_parents_categories: 1},
                 success: function (data) {
                     $('.add_category_modal #parent_category').html('');
                     $('.add_category_modal #parent_category').html(data);
+                    $('.edit_category_modal #parent_category').html('');
+                    $('.edit_category_modal #parent_category').html(data);
                 }
             })
         }
@@ -185,7 +183,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
                 $('.add_category_modal .overlay').show();
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.add_category').serialize(),
                     success: function (data) {
                         $('.add_category_modal .overlay').hide();
@@ -214,7 +212,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
 
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:{delete_category_id: $(this).data('cid')},
                     success: function (data) {
                         if (data == 'Sorry this category is a parent of other categories' || data == 'Category deleted successfully'){
@@ -236,7 +234,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
         $('.edit-category').on('click', function () {
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 dataType:'json',
                 data:{get_category_id: $(this).data('cid')},
                 success: function (data) {
@@ -249,13 +247,13 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_categori
         //Update category
         $('.edit_category').on('submit', function (e) {
             e.preventDefault();
-            if ($('#category_name').val() == ''){
-                $('#category_name').addClass('border-danger');
-                $('#cat_error').html('<span class="text-danger">Please Enter Category Name</span>');
+            if ($('.edit_category_modal #category_name').val() == ''){
+                $('.edit_category_modal #category_name').addClass('border-danger');
+                $('.edit_category_modal #cat_error').html('<span class="text-danger">Please Enter Category Name</span>');
             }else {
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.edit_category').serialize(),
                     success: function (data) {
                         window.location.href = '';

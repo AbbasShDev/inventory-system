@@ -7,7 +7,7 @@ require_once 'includes/classes/Brands.php';
 require_once 'includes/classes/Users.php';
 
 if (!isset($_SESSION['user_id'])){
-    header('location:index.php');
+    header("location: $config[app_url]");
     die();
 }
 
@@ -161,10 +161,10 @@ $user = $users->getUser($_SESSION['user_id']);
                 " alt="user">
                 <div class="card-body">
                     <h4 class="card-title">Profile Info</h4>
-                    <p class="card-text"><i class="fas fa-user text-info"></i>&nbsp;<?php echo $user['user_name']?></p>
-                    <p class="card-text"><i class="fas fa-user-tag text-info"></i>&nbsp;<?php echo $user['user_type']?></p>
-                    <p class="card-text"><i class="fas fa-clock text-info"></i>&nbsp;Last Login: <?php echo $user['user_last_login']?></p>
-                    <a href="profile.php" class="btn btn-info"><i class="far fa-edit"></i>&nbsp;Edit Profile</a>
+                    <p class="card-text"><i class="fas fa-user fa-fw text-info"></i>&nbsp;<?php echo $user['user_name']?></p>
+                    <p class="card-text"><i class="fas fa-user-tag fa-fw text-info"></i>&nbsp;<?php echo $user['user_type']?></p>
+                    <p class="card-text"><i class="fas fa-clock fa-fw text-info"></i>&nbsp;Last Login: <?php echo $user['user_last_login']?></p>
+                    <a href="profile" class="btn btn-info"><i class="far fa-edit"></i>&nbsp;Edit Profile</a>
                 </div>
             </div>
         </div>
@@ -180,8 +180,8 @@ $user = $users->getUser($_SESSION['user_id']);
                             <div class="card-body">
                                 <h4 class="card-title">Orders</h4>
                                 <p class="card-text">Here you can make a new orders and print invoices.</p>
-                                <a href="new_order.php" class="btn btn-secondary mt-3"><i class="fas fa-plus"></i>&nbsp;New Order</a>
-                                <a href="manage_orders.php" class="btn btn-info mt-3"><i class="fas fa-pencil-alt"></i>&nbsp;Manage </a>
+                                <a href="new_order" class="btn btn-secondary mt-3"><i class="fas fa-plus"></i>&nbsp;New Order</a>
+                                <a href="manage_orders" class="btn btn-info mt-3"><i class="fas fa-pencil-alt"></i>&nbsp;Manage </a>
                             </div>
                         </div>
 
@@ -193,6 +193,7 @@ $user = $users->getUser($_SESSION['user_id']);
     </div>
 </div>
 
+<?php if ($_SESSION['user_role'] == 'Admin' || $_SESSION['user_role'] == 'Manager'){ ?>
 <div class="container my-4">
     <div class="row">
         <div class="col-md-6 col-lg-4 mb-4">
@@ -201,7 +202,7 @@ $user = $users->getUser($_SESSION['user_id']);
                     <h4 class="card-title">Categories<i class="fas fa-tags float-right text-info"></i></h4>
                     <p class="card-text" style="height: 72px">Here you can manage your categories and add new category or sub-category</p>
                     <a href="#!" class="btn btn-success" data-toggle="modal" data-target="#add_category"><i class="fas fa-plus"></i>&nbsp;Add</a>
-                    <a href="manage_categories.php" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
+                    <a href="manage_categories" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
                 </div>
             </div>
         </div>
@@ -211,7 +212,7 @@ $user = $users->getUser($_SESSION['user_id']);
                     <h4 class="card-title">Brands<i class="fab fa-buffer float-right text-info"></i></h4>
                     <p class="card-text" style="height: 72px">Here you can manage your brands and add new brand</p>
                     <a href="#!" class="btn btn-success" data-toggle="modal" data-target="#add_brand"><i class="fas fa-plus"></i>&nbsp;Add</a>
-                    <a href="manage_brands.php" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
+                    <a href="manage_brands" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
                 </div>
             </div>
         </div>
@@ -221,7 +222,7 @@ $user = $users->getUser($_SESSION['user_id']);
                     <h4 class="card-title">Products<i class="fas fa-shopping-bag float-right text-info"></i></h4>
                     <p class="card-text" style="height: 72px">Here you can manage your products and add new product</p>
                     <a href="#!" class="btn btn-success"  data-toggle="modal" data-target="#add_product"><i class="fas fa-plus"></i>&nbsp;Add</a>
-                    <a href="manage_products.php" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
+                    <a href="manage_products" class="btn btn-warning"><i class="fas fa-pencil-alt"></i>&nbsp;Manage</a>
                 </div>
             </div>
         </div>
@@ -229,7 +230,10 @@ $user = $users->getUser($_SESSION['user_id']);
     </div>
 </div>
 
-<?php require_once 'includes/templates/footer.php'?>
+<?php
+}
+require_once 'includes/templates/footer.php'
+?>
 <script>
     $(document).ready(function () {
 
@@ -238,7 +242,7 @@ $user = $users->getUser($_SESSION['user_id']);
         function getAllParentCategories(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{get_parents_categories: 1},
                 success: function (data) {
                     $('.add_category_modal #parent_category').html('');
@@ -252,7 +256,7 @@ $user = $users->getUser($_SESSION['user_id']);
         function getAllCategories(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{get_all_categories: 1},
                 success: function (data) {
                     $('.add_product_modal #select_category').html('');
@@ -266,7 +270,7 @@ $user = $users->getUser($_SESSION['user_id']);
         function getAllBrands(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{get_all_brands: 1},
                 success: function (data) {
                     $('.add_product_modal #select_brand').html('');
@@ -285,7 +289,7 @@ $user = $users->getUser($_SESSION['user_id']);
                 $('.add_category_modal .overlay').show();
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.add_category').serialize(),
                     success: function (data) {
                         $('.add_category_modal .overlay').hide();
@@ -318,7 +322,7 @@ $user = $users->getUser($_SESSION['user_id']);
                 $('.add_brand_modal .overlay').show();
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.add_brand').serialize(),
                     success: function (data) {
                         $('.add_brand_modal .overlay').hide();
@@ -346,7 +350,7 @@ $user = $users->getUser($_SESSION['user_id']);
             $('.add_product_modal .overlay').show();
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:$('.add_product').serialize(),
                 success: function (data) {
                     $('.add_product_modal .overlay').hide();

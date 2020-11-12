@@ -76,9 +76,11 @@ class Users {
         }else{
             $user = $result->fetch_assoc();
             if (password_verify($password, $user['user_password'])){
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['user_name'];
-                $_SESSION['user_last_login'] = $user['user_last_login'];
+                $_SESSION['user_id']            = $user['id'];
+                $_SESSION['user_name']          = $user['user_name'];
+                $_SESSION['user_last_login']    = $user['user_last_login'];
+                $_SESSION['user_role']          = $user['user_type'];
+
 
                 //updating user last login
                 $prep_stat = $this->con->prepare('UPDATE users SET user_last_login = now() WHERE user_email=?');
@@ -109,11 +111,8 @@ class Users {
         return  $prep_stat->get_result()->fetch_assoc();
     }
 
-    public function updateUsernameEmail($user_id,$username, $email){
-        if ($this->userExist($email)) {
-            array_push($this->errors,'Email is already exist.');
-            return $this->errors;
-        }else{
+    public function updateUsernameEmail($user_id,$username, $email, $login_email){
+        if ($email == $login_email){
             $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=? WHERE id=?');
             $prep_stat->bind_param('ssi',$username, $email, $user_id);
             $result = $prep_stat->execute() or die($this->con->error);
@@ -122,19 +121,53 @@ class Users {
                 array_push($this->errors,'Something went wrong while creating account.');
                 return $this->errors;
             }
+        }else{
+            if ($this->userExist($email)) {
+                array_push($this->errors,'Email is already exist.');
+                return $this->errors;
+            }else{
+                $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=? WHERE id=?');
+                $prep_stat->bind_param('ssi',$username, $email, $user_id);
+                $result = $prep_stat->execute() or die($this->con->error);
+
+                if (!$result) {
+                    array_push($this->errors,'Something went wrong while creating account.');
+                    return $this->errors;
+                }
+            }
         }
+
+
     }
 
     public function updateUsernameEmailRole($user_id,$username, $email, $role){
 
-            $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=?, user_type=? WHERE id=?');
-            $prep_stat->bind_param('sssi',$username, $email, $role, $user_id);
+            $prep_stat1 = $this->con->prepare('SELECT user_email FROM users WHERE id=?');
+            $prep_stat1->bind_param('i', $user_id);
+            $prep_stat1->execute() or die($this->con->error);
+            $result = $prep_stat1->get_result()->fetch_assoc();
 
-            if ($prep_stat->execute()) {
-                return 'User updated Successfully';
-            }else {
-                die($this->con->error);
+            $current_email = $result['user_email'];
+
+            if ($email == $current_email){
+
+            }else{
+                if ($this->userExist($email)) {
+                    return 'Email is already exist.';
+
+                }else{
+                    $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=?, user_type=? WHERE id=?');
+                    $prep_stat->bind_param('sssi',$username, $email, $role, $user_id);
+
+                    if ($prep_stat->execute()) {
+                        return 'User updated Successfully';
+                    }else {
+                        die($this->con->error);
+                    }
+                }
             }
+
+
 
     }
 

@@ -6,7 +6,7 @@ require_once 'includes/classes/Category.php';
 require_once 'includes/classes/Brands.php';
 
 if (!isset($_SESSION['user_id'])){
-    header('location:index.php');
+    header("location: $config[app_url]");
     die();
 }
 ?>
@@ -146,7 +146,7 @@ if (!isset($_SESSION['user_id'])){
         function addOrderItem(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{getNewOrderItem: 1},
                 success: function (data) {
                     $('#invoice-item').append(data);
@@ -177,7 +177,7 @@ if (!isset($_SESSION['user_id'])){
             $('.overlay').show();
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 dataType:'json',
                 data:{get_item_price_quantity: pid},
                 success: function (data) {
@@ -252,7 +252,7 @@ if (!isset($_SESSION['user_id'])){
             //let invoice = $('.invoice #order-form').serialize();
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:$('.invoice #order-form').serialize(),
                 beforeSend:function (){
                     $('.overlay').show();

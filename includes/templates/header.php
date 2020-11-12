@@ -22,7 +22,7 @@ require_once __DIR__.'/../config/app.php'
 <body>
 <!-- Start navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-    <a class="navbar-brand" href="<?php echo $config['app_url']?>dashboard.php">Inventory System</a>
+    <a class="navbar-brand" href="<?php echo $config['app_url']?>dashboard">Inventory System</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -30,26 +30,30 @@ require_once __DIR__.'/../config/app.php'
         <ul class="navbar-nav">
             <?php if (isset($_SESSION['user_id'])){?>
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo $config['app_url']?>dashboard.php"><i class="fas fa-home">&nbsp;</i>Home</a>
+                <a class="nav-link" href="<?php echo $config['app_url']?>dashboard"><i class="fas fa-home">&nbsp;</i>Home</a>
+            </li>
+            <?php if ($_SESSION['user_role'] == 'Admin' || $_SESSION['user_role'] == 'Manager'){  ?>
+            <li class="nav-item active">
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_categories"><i class="fas fa-tags">&nbsp;</i>Categories</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo $config['app_url']?>manage_categories.php"><i class="fas fa-tags">&nbsp;</i>Categories</a>
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_brands"><i class="fab fa-buffer">&nbsp;</i>Brands</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo $config['app_url']?>manage_brands.php"><i class="fab fa-buffer">&nbsp;</i>Brands</a>
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_products"><i class="fas fa-shopping-bag">&nbsp;</i>Products</a>
             </li>
+            <?php } ?>
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo $config['app_url']?>manage_products.php"><i class="fas fa-shopping-bag">&nbsp;</i>Products</a>
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_orders"><i class="fas fa-file-invoice">&nbsp;</i>Orders</a>
             </li>
+            <?php if ($_SESSION['user_role'] == 'Admin'){  ?>
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo $config['app_url']?>manage_orders.php"><i class="fas fa-file-invoice">&nbsp;</i>Orders</a>
+                <a class="nav-link" href="<?php echo $config['app_url']?>manage_users"><i class="fas fa-users">&nbsp;</i>Users</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="<?php echo $config['app_url']?>manage_users.php"><i class="fas fa-users">&nbsp;</i>Users</a>
+            <?php } ?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo $config['app_url']?>logout"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
             </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo $config['app_url']?>logout.php"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
-                </li>
             <?php } ?>
         </ul>
     </div>

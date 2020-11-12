@@ -50,10 +50,10 @@ class Database {
         if ($prevPage == 0) {
             $pagination .= 'disabled';
         }
-        $pagination .= '"><a class="page-link" href="'.$pageName.'.php?pagno=' . $prevPage . '"><span>&laquo;</span></a> ';
+        $pagination .= '"><a class="page-link" href="'.$pageName.'?pagno=' . $prevPage . '"><span>&laquo;</span></a> ';
         $pagination .= '</li>';
         if ($page > $linksAfterAndBefore + 1) {
-            $pagination .= '<li class="page-item"><a class="page-link" href="'.$pageName.'.php"><span>1</span></a></li>';
+            $pagination .= '<li class="page-item"><a class="page-link" href="'.$pageName.'"><span>1</span></a></li>';
         };
         if ($page > $linksAfterAndBefore + 2) {
             $pagination .= '<li class="page-item disabled"><a class="page-link" href=""><span>...</span></a></li>';
@@ -64,7 +64,7 @@ class Database {
                 if ($i == $page) {
                     $pagination .= 'active';
                 };
-                $pagination .= '"><a class="page-link" href="'.$pageName.'.php?pagno=' . $i . '">' . $i . '</a></li>';
+                $pagination .= '"><a class="page-link" href="'.$pageName.'?pagno=' . $i . '">' . $i . '</a></li>';
             }
         }
         for ($i = $page + 1; $i <= $page + $linksAfterAndBefore; $i++){
@@ -75,21 +75,21 @@ class Database {
             if ($i == $page) {
                 $pagination .= 'active';
             };
-            $pagination .= '"><a class="page-link" href="'.$pageName.'.php?pagno=' . $i . '">' . $i . '</a></li>';
+            $pagination .= '"><a class="page-link" href="'.$pageName.'?pagno=' . $i . '">' . $i . '</a></li>';
         }
         if ($page + $linksAfterAndBefore + 1  < $totalPages ){
             $pagination .= '<li class="page-item disabled"><a class="page-link" href=""><span>...</span></a></li>';
         }
         if ($page != $totalPages ){
             $pagination .= '<li class="page-item">
-                                <a class="page-link" href="'.$pageName.'.php?pagno='.$totalPages.'">
+                                <a class="page-link" href="'.$pageName.'?pagno='.$totalPages.'">
                                     <span aria-hidden="true">'.$totalPages.'</span>
                                 </a>
                             </li>';
         }
         $pagination .= '<li class="page-item ';
         if ($nextPage == 0){$pagination .= 'disabled';}
-        $pagination .= '"><a class="page-link" href="'.$pageName.'.php?pagno='.$nextPage.'">
+        $pagination .= '"><a class="page-link" href="'.$pageName.'?pagno='.$nextPage.'">
                                 &raquo;
                             </a>
                         </li>';

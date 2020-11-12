@@ -1,0 +1,2 @@
+# To disable or prevent the directory access/listing
+Options -Indexes

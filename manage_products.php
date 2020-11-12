@@ -6,6 +6,16 @@ require_once 'includes/classes/Database.php';
 require_once 'includes/classes/Brands.php';
 require_once 'includes/classes/Category.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
+
+if ($_SESSION['user_role'] == 'User'){
+    header('location:dashboard');
+    die();
+}
+
 $getAllWithPagination = new Database();
 
 $table = 'products';
@@ -196,7 +206,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
         function getAllCategories(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{get_all_categories: 1},
                 success: function (data) {
                     $('.edit_product_modal #select_category').html('');
@@ -212,7 +222,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
         function getAllBrands(){
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:{get_all_brands: 1},
                 success: function (data) {
                     $('.edit_product_modal #select_brand').html('');
@@ -229,7 +239,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
             $('.add_product_modal .overlay').show();
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 data:$('.add_product').serialize(),
                 success: function (data) {
                     $('.add_product_modal .overlay').hide();
@@ -253,7 +263,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
         $('.edit-product').on('click', function () {
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 dataType:'json',
                 data:{get_product_info: $(this).data('pid')},
                 success: function (data) {
@@ -271,13 +281,13 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
         //Update product
         $('.edit_product').on('submit', function (e) {
             e.preventDefault();
-            if ($('#product_name').val() == ''){
-                $('#product_name').addClass('border-danger');
-                $('#product_error').html('<span class="text-danger">Please Enter Product Name</span>');
+            if ($('.edit_product_modal #product_name').val() == ''){
+                $('.edit_product_modal #product_name').addClass('border-danger');
+                $('.edit_product_modal #product_error').html('<span class="text-danger">Please Enter Product Name</span>');
             }else {
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.edit_product').serialize(),
                     success: function (data) {
                         window.location.href = '';
@@ -292,7 +302,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_products
             if (confirm('Confirm deleting product..?')){
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:{delete_product_id: $(this).data('pid')},
                     success: function (data) {
                         window.location.href = '';

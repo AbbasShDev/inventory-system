@@ -5,6 +5,16 @@ require_once 'includes/templates/header.php';
 require_once 'includes/classes/Database.php';
 require_once 'includes/classes/Brands.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
+
+if ($_SESSION['user_role'] == 'User'){
+    header('location:dashboard');
+    die();
+}
+
 $getAllWithPagination = new Database();
 
 $table = 'brands';
@@ -134,7 +144,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_brands',
                 $('.add_brand_modal .overlay').show();
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.add_brand').serialize(),
                     success: function (data) {
                         $('.add_brand_modal .overlay').hide();
@@ -159,7 +169,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_brands',
         $('.edit_brand').on('click', function () {
             $.ajax({
                 method:'POST',
-                url:'process.php',
+                url:'process',
                 dataType:'json',
                 data:{get_brand_id: $(this).data('bid')},
                 success: function (data) {
@@ -171,13 +181,16 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_brands',
         //Update brand
         $('.edit-brand').on('submit', function (e) {
             e.preventDefault();
-            if ($('#brand_name').val() == ''){
-                $('#brand_name').addClass('border-danger');
-                $('#brand_error').html('<span class="text-danger">Please Enter Brand Name</span>');
+
+
+            if ($('.edit_brand_modal #brand_name').val() == ''){
+                $('.edit_brand_modal #brand_name').addClass('border-danger');
+                $('.edit_brand_modal #brand_error').html('<span class="text-danger">Please Enter Brand Name</span>');
             }else {
+                console.log('clicked');
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:$('.edit-brand').serialize(),
                     success: function (data) {
                         window.location.href = '';
@@ -193,7 +206,7 @@ $pagination = $getAllWithPagination->getAllResultWithPagination('manage_brands',
 
                 $.ajax({
                     method:'POST',
-                    url:'process.php',
+                    url:'process',
                     data:{delete_brand_id: $(this).data('bid')},
                     success: function (data) {
                         window.location.href = '';

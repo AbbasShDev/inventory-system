@@ -7,7 +7,7 @@ require_once 'includes/classes/Uploader.php';
 
 
 if (!isset($_SESSION['user_id'])){
-    header('location:index.php');
+    header("location: $config[app_url]");
     die();
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         if (empty($email)){$errors[] = 'Email is required.';}
 
         if (empty($errors)){
-            $errors = $users->updateUsernameEmail($user['id'], $username, $email );
+            $errors = $users->updateUsernameEmail($user['id'], $username, $email, $user['user_email']);
         }
 
         if (!count($errors)){

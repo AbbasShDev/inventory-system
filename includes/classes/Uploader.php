@@ -22,9 +22,9 @@ class Uploader {
     protected function validate(){
 
         if (!$this->isMimeAllowed()){
-            array_push($this->errors, 'تسيق الملف غير مسموح به');
+            array_push($this->errors, 'File type is not allowed');
         }elseif (!$this->isSizeAllowed()){
-            array_push($this->errors, 'حجم الملف غير مسموح به');
+            array_push($this->errors, 'File size is not allowed');
         }
 
         return $this->errors;
@@ -34,7 +34,7 @@ class Uploader {
         if (!is_dir($this->uploadDir)){
             umask(0);
             if (!mkdir($this->uploadDir,0775)){
-                array_push($this->errors, 'لا يمكن انشاء مسار الملف');
+                array_push($this->errors, 'Could not create upload directory');
                 return false;
             }
         }
@@ -52,7 +52,7 @@ class Uploader {
         }elseif (!$this->createUploadDir()){
             return $this->errors;
         }elseif (!move_uploaded_file($this->file['tmp_name'], $this->uploadDir.'/'.$this->fileName)){
-            array_push($this->errors, 'حدث خطأ اثناء تحميل الملف');
+            array_push($this->errors, 'Error uploading your file');
         }
 
         return $this->errors;

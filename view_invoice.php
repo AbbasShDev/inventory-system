@@ -3,7 +3,12 @@ session_start();
 
 require_once 'includes/classes/Invoices.php';
 require_once __DIR__ . '/vendor/autoload.php';
+require_once 'includes/config/app.php';
 
+if (!isset($_SESSION['user_id'])){
+    header("location: $config[app_url]");
+    die();
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['invo_id']) && is_numeric($_POST['invo_id'])){
 

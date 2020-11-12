@@ -5,7 +5,7 @@ require_once 'includes/templates/header.php';
 require_once 'includes/classes/Users.php';
 
 if (isset($_SESSION['user_id'])){
-    header('location:dashboard.php');
+    header('location:dashboard');
     die();
 }
 
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         if (!count($errors)){
             $_SESSION['notify_message'] = 'Account created, please login.';
-            header('location:index.php');
+            header("location: $config[app_url]");
             die();
         }
     }
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <?php require_once 'includes/config/errorMessages.php'?>
     <div class="card col-md-8 col-lg-4 mx-auto">
         <div class="card-body">
-            <a href="index.php" class="float-right btn btn-outline-info">Login</a>
+            <a href="<?php echo $config['app_url']?>" class="float-right btn btn-outline-info">Login</a>
             <h4 class="card-title mb-4 mt-1">Register</h4>
             <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post" autocomplete="off">
                 <div class="form-group">
