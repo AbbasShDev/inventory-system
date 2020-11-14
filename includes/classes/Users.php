@@ -150,7 +150,14 @@ class Users {
             $current_email = $result['user_email'];
 
             if ($email == $current_email){
+                $prep_stat = $this->con->prepare('Update users Set user_name=?, user_email=?, user_type=? WHERE id=?');
+                $prep_stat->bind_param('sssi',$username, $email, $role, $user_id);
 
+                if ($prep_stat->execute()) {
+                    return 'User updated Successfully';
+                }else {
+                    die($this->con->error);
+                }
             }else{
                 if ($this->userExist($email)) {
                     return 'Email is already exist.';
