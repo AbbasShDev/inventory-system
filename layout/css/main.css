@@ -110,3 +110,27 @@
 }
 
 /* CSS Loader End Here */
+
+/* Start footer */
+.footer {
+    background-color: #17a2b8;
+    margin-top: 80px !important;
+    width: 100%;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+
+.footer i {
+    text-align: center;
+    color: #fff;
+    transform: scaleX(1);
+    font-size: 16px;
+    transition: all .3s ease-in-out;
+}
+
+.footer i:hover {
+    transform: scale(1.4);
+}
+/* End footer */
