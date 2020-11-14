@@ -1,5 +1,5 @@
 # inventory-system
-A simple inventory management system built with PHP, MySQL to mange orders and invoices.
+A simple inventory management system built with PHP, MySQL to mange orders and invoices. Uses mpdf (https://github.com/mpdf/mpdf) library to generate PDF files
 # System Features
 <ol>
   <li>
@@ -95,3 +95,10 @@ A simple inventory management system built with PHP, MySQL to mange orders and i
       </ul>
  </li>
 </ol>
+
+# DON'T FORGET TO FOLLOW ME ON
+
+<ul>        
+  <li><a href="https://twitter.com/AbbasShDev" target="_blank">Twitter</a></li>
+  <li><<a href="https://www.linkedin.com/in/abbas-alshaqaq-7b58221a5/" target="_blank">Linkedin</a>/li>
+</ul>
