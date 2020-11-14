@@ -10,10 +10,30 @@ A simple inventory management software built with PHP, MySQL to mange orders and
       </ul>
  </li>
   <li>
-    <strong>Manage Users</strong>
+    <strong>Manage categories</strong>
       <ul>
-          <li>Add new user</li>
-          <li>View, Update, and remove users</li>
+          <li>Add new category</li>
+          <li>View, Update, and remove Categories</li>
+      </ul>
+ </li>
+  <li>
+    <strong>Manage brands</strong>
+      <ul>
+          <li>Add new Brand</li>
+          <li>View, Update, and remove Brands</li>
+      </ul>
+ </li>
+  <li>
+    <strong>Manage prosucts</strong>
+      <ul>
+          <li>Add new prosuct</li>
+          <li>View, Update, and remove prosucts</li>
+      </ul>
+ </li>
+  <li>
+    <strong>Profile</strong>
+      <ul>
+          <li>View and update the logged in user information</li>
       </ul>
  </li>
 </ol>
