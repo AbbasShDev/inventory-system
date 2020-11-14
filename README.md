@@ -78,7 +78,7 @@ A simple inventory management system built with PHP, MySQL to manage orders, pro
 
 # Demo
 
-<p>http://inveno-system.000webhostapp.com</p>
+<p>https://inveno-system.000webhostapp.com</p>
 <ol>
   <li>
     <strong>Manager</strong>
