@@ -79,3 +79,19 @@ A simple inventory management system built with PHP, MySQL to mange orders and i
 # Demo
 
 <p>http://inveno-system.000webhostapp.com</p>
+<ol>
+  <li>
+    <strong>Manager</strong>
+      <ul>
+          <li>Email: manager@demo.com</li>
+          <li>Password: 123456</li>
+      </ul>
+ </li>
+  <li>
+    <strong>User</strong>
+      <ul>
+          <li>Email: user@demo.com</li>
+          <li>Password: 123456</li>
+      </ul>
+ </li>
+</ol>
