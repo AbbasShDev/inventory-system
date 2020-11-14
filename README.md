@@ -100,5 +100,5 @@ A simple inventory management system built with PHP, MySQL to mange orders and i
 
 <ul>        
   <li><a href="https://twitter.com/AbbasShDev" target="_blank">Twitter</a></li>
-  <li><<a href="https://www.linkedin.com/in/abbas-alshaqaq-7b58221a5/" target="_blank">Linkedin</a>/li>
+  <li><a href="https://www.linkedin.com/in/abbas-alshaqaq-7b58221a5/" target="_blank">Linkedin</a>/li>
 </ul>
