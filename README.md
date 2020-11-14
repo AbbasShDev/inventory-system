@@ -1,7 +1,7 @@
 # inventory-system
 A simple inventory management software built with PHP, MySQL to mange orders and invoices.
 # System Features
-<ul>
+<ol>
 <li>
 abbas
 </li>
@@ -17,4 +17,4 @@ abbas
   <li>
 abbas
 </li>
-</ul>
+</ol>
