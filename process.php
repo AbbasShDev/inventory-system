@@ -13,12 +13,6 @@ if (!isset($_SESSION['user_id'])){
     die();
 }
 
-
-if ($_SESSION['user_role'] != 'Admin'){
-    header('location:dashboard');
-    die();
-}
-
 $errors = [];
 
 $product   = new Products();
@@ -368,12 +362,13 @@ if (isset($_POST['getNewOrderItem'])){
 
     $result = '';
     $result .= '<tr>
-                <td><b class="number"></b></td>
+                <td><b class="item_number"></b></td>
                 <td>
                 <select name="pid[]" class="form-control form-control-sm pid" style="max-width: 240px !important;">
                 <option value="" selected disabled>Choose product</option>';
     foreach ($products as $product){
-    $result .= '<option value="'.$product['id'].'">'.$product['product_name'].'</option>';}
+    $result .= '<option value="'.$product['id'].'">'.$product['product_name'].'</option>';
+    };
     $result .= '</select>
                 </td>
                 <td><input type="text" name="tqty[]" class="form-control form-control-sm tqty" readonly></td>
@@ -381,9 +376,9 @@ if (isset($_POST['getNewOrderItem'])){
                 <td><input type="text" name="price[]" class="form-control form-control-sm price" readonly></td>
                 <td class="d-none"><input type="hidden" name="pro_name[]" class="form-control form-control-sm pro_name"></td>
                 <td>$<span class="total_item_price">0</span></td>
-               
+
                 </tr>';
-    echo $result;;
+    echo $result;
 }
 
 //get item price quantity

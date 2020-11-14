@@ -151,7 +151,7 @@ if (!isset($_SESSION['user_id'])){
                 success: function (data) {
                     $('#invoice-item').append(data);
                     let n = 0;
-                    $('#invoice-item .number').each(function (){
+                    $('#invoice-item .item_number').each(function (){
                         $(this).html(++n);
                     })
                 }
